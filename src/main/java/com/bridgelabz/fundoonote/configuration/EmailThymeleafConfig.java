@@ -4,27 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 
 public class EmailThymeleafConfig {
 
-	@Autowired
-	SpringTemplateEngine templateEngine;
-	
-	SpringResourceTemplateResolver emailTemplateResolver;
-	
-	@Bean
-	public SpringTemplateEngine springTemplateEngine() {
-		templateEngine.addTemplateResolver(htmlTemplateResolver());
-		return templateEngine;
-	}
+    @Autowired
+    SpringTemplateEngine templateEngine;
 
-	private SpringResourceTemplateResolver htmlTemplateResolver() {
-		emailTemplateResolver.setPrefix("classpath:/template/");
-		emailTemplateResolver.setSuffix(".html");
-		emailTemplateResolver.setTemplateMode(templateMode);
-		return null;
-	}
-	
-	
+    SpringResourceTemplateResolver emailTemplateResolver;
+
+    @Bean
+    public SpringTemplateEngine springTemplateEngine() {
+        templateEngine.addTemplateResolver(htmlTemplateResolver());
+        return templateEngine;
+    }
+
+    private SpringResourceTemplateResolver htmlTemplateResolver() {
+        emailTemplateResolver.setPrefix("classpath:/template/");
+        emailTemplateResolver.setSuffix(".html");
+        emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        return null;
+    }
 }

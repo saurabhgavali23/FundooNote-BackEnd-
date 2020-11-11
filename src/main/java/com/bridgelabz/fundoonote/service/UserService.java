@@ -1,7 +1,9 @@
 package com.bridgelabz.fundoonote.service;
 
+import com.bridgelabz.fundoonote.exception.FundooNoteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.dto.UserDTO;
@@ -21,6 +23,9 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private EmailSenderService emailSenderService;
+
+	@Autowired
+	BCryptPasswordEncoder encoder;
 
 	@Override
 	public UserDetails addUser(UserDTO userDTO) {
@@ -53,5 +58,22 @@ public class UserService implements IUserService {
 		mailMessage.setText("To complete the password reset process, please click here: "
 				+"http://localhost:8080/fundoonote/confirm-reset-password?token="+token.confirmationToken);
 		emailSenderService.sendEmail(mailMessage);	
+	}
+
+	@Override
+	public String loginUser(String email, String password) {
+
+		UserDetails userDetails = userRepository.findByEmail(email)
+				.orElseThrow(()-> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL,"Invalid Email Id"));
+
+		if (!encoder.matches(password, userDetails.password)) {
+			throw new FundooNoteException(FundooNoteException.ExceptionType.INVALID_PASSWORD, "Invalid_Password");
+		}
+
+		UserDetails userEmailConfirmation = userRepository.findByEmailVerificatioin(email);
+		if (userEmailConfirmation == null) {
+			throw new FundooNoteException(FundooNoteException.ExceptionType.ACCOUNT_NOT_VALID, "Invalid_Account");
+		}
+		return "Login Successfully";
 	}
 }

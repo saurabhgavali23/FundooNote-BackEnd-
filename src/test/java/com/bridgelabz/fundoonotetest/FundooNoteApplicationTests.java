@@ -9,5 +9,4 @@ class FundooNoteApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
