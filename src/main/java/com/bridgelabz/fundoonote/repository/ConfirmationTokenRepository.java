@@ -19,5 +19,5 @@ public interface ConfirmationTokenRepository extends CrudRepository<Confirmation
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE confirmation_token t set confirmation_token=?1, created_date=?2 where t.user_id=?3", nativeQuery = true)
-	void saveNewTokenAndTime(String Token,Date date, int id);
+	void saveNewTokenAndTime(String Token,Date date, String id);
 }

@@ -9,5 +9,5 @@ public interface IUserService {
 
     void forgotPassword(UserDetails email);
 
-    String loginUser(String email, String password);
+    UserDetails loginUser(String email, String password);
 }

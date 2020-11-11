@@ -61,7 +61,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public String loginUser(String email, String password) {
+	public UserDetails loginUser(String email, String password) {
 
 		UserDetails userDetails = userRepository.findByEmail(email)
 				.orElseThrow(()-> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL,"Invalid Email Id"));
@@ -74,6 +74,6 @@ public class UserService implements IUserService {
 		if (userEmailConfirmation == null) {
 			throw new FundooNoteException(FundooNoteException.ExceptionType.ACCOUNT_NOT_VALID, "Invalid_Account");
 		}
-		return "Login Successfully";
+		return userDetails;
 	}
 }
