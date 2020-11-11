@@ -47,10 +47,6 @@ public class FundooNoteController {
     @Autowired
     BCryptPasswordEncoder encoder;
 
-    @Autowired
-    EmailSenderService emailSenderService;
-
-
     @PostMapping("/user")
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
 
@@ -63,8 +59,8 @@ public class FundooNoteController {
             throw new FundooNoteException(FundooNoteException.ExceptionType.USER_ALREADY_REGISTERED,
                     "User_Already_Registered");
         }
-        UserDetails userDetails = userService.addUser(userDTO);
-        ResponseDTO userData = new ResponseDTO("User Added Successfully", userDetails);
+        String message = userService.addUser(userDTO);
+        ResponseDTO userData = new ResponseDTO(message);
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
     }
 

@@ -28,7 +28,7 @@ public class UserService implements IUserService {
 	BCryptPasswordEncoder encoder;
 
 	@Override
-	public UserDetails addUser(UserDTO userDTO) {
+	public String addUser(UserDTO userDTO) {
 		
 		UserDetails userDetails = new UserDetails(userDTO);
 		UserDetails details = userRepository.save(userDetails);
@@ -42,7 +42,7 @@ public class UserService implements IUserService {
 		mailMessage.setText("To Confirm Your Account, please click here : "
 				+ "http://localhost:8080/fundoonote/confirm-account?token=" + confirmationToken.confirmationToken);
 		emailSenderService.sendEmail(mailMessage);
-		return details;
+		return "User Added Successfully";
 	}
 
 	@Override

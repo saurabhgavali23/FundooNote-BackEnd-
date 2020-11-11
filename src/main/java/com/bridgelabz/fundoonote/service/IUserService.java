@@ -5,7 +5,7 @@ import com.bridgelabz.fundoonote.module.UserDetails;
 
 public interface IUserService {
 
-    UserDetails addUser(UserDTO fundooDTO);
+    String addUser(UserDTO fundooDTO);
 
     void forgotPassword(UserDetails email);
 
