@@ -27,8 +27,7 @@ public class UserDetails {
 
 	public String firstName;
 	public String lastName;
-	public String gender;
-	public String phoneNumber;
+	public String service;
 	public String email;
 	public String password;
 	public boolean isVerified = false;
@@ -52,8 +51,7 @@ public class UserDetails {
 
 		this.firstName = fundooDto.firstName;
 		this.lastName = fundooDto.lastName;
-		this.gender = fundooDto.gender;
-		this.phoneNumber = fundooDto.phoneNumber;
+		this.service = fundooDto.service;
 		this.email = fundooDto.email;
 		this.password = new BCryptPasswordEncoder().encode(fundooDto.password);
 	}

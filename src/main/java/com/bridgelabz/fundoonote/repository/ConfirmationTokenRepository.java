@@ -15,7 +15,7 @@ import com.bridgelabz.fundoonote.module.ConfirmationToken;
 public interface ConfirmationTokenRepository extends CrudRepository<ConfirmationToken, String> {
 
 	Optional<ConfirmationToken> findByConfirmationToken(String confirmationToken);
-	
+
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE confirmation_token t set confirmation_token=?1, created_date=?2 where t.user_id=?3", nativeQuery = true)
