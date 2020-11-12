@@ -87,9 +87,9 @@ public class FundooNoteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> verifyAccount(@Valid @RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+    public ResponseEntity<ResponseDTO> verifyAccount(@RequestBody UserDTO userDTO) {
 
-        UserDetails responseMessage = userService.loginUser(email, password);
+        UserDetails responseMessage = userService.loginUser(userDTO.email, userDTO.password);
         ResponseDTO userData = new ResponseDTO("Login Successfully",responseMessage);
 
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
