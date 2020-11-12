@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,6 @@ import com.bridgelabz.fundoonote.module.ConfirmationToken;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
-import com.bridgelabz.fundoonote.service.EmailSenderService;
 import com.bridgelabz.fundoonote.service.UserService;
 
 @RestController
@@ -46,6 +45,9 @@ public class FundooNoteController {
 
     @Autowired
     BCryptPasswordEncoder encoder;
+
+    @Autowired
+    JwtToken jwtToken;
 
     @PostMapping("/user")
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
@@ -67,13 +69,13 @@ public class FundooNoteController {
     @GetMapping("/confirm-account")
     public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
 
-        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken)
+        UserDetails token = userRepository.findById(confirmationToken)
                 .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link"));
 
-        UserDetails user = userRepository.findByEmail(token.user.email)
+        UserDetails user = userRepository.findByEmail(token.email)
                 .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
 
-        if (token.isExpired())
+        if (jwtToken.validateToken(confirmationToken,token.email))
             throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_EXPIRED, "Link_Expired");
 
         user.setVerified(true);
@@ -96,7 +98,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/forgot-password")
-    public ResponseEntity<ResponseDTO> forgetpassword(@RequestParam("email") String email) {
+    public ResponseEntity<ResponseDTO> forgetPassword(@RequestParam("email") String email) {
 
 
         UserDetails findByEmail = userRepository.findByEmail(email)

@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<UserDetails, Integer> {
 
 	Optional<UserDetails> findByEmail(String email);
 
+	Optional<UserDetails> findById(String id);
+
 	@Query(value = "SELECT * FROM user_details u WHERE u.email=?1 and u.password=?2", nativeQuery=true)
 	UserDetails findByEmailAndPass(String email, String password);
 

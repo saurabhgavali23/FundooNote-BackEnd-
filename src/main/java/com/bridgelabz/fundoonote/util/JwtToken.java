@@ -1,10 +1,8 @@
 package com.bridgelabz.fundoonote.util;
 
-import com.bridgelabz.fundoonote.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,9 +48,8 @@ public class JwtToken {
         return compact;
     }
 
-    public Boolean validateToken(String token, UserDTO userDTO) {
+    public Boolean validateToken(String token, String email) {
         final String username = getUsernameFromToken(token);
-        return (username.equals(userDTO.email) && !isTokenExpired(token));
+        return (username.equals(email) && !isTokenExpired(token));
     }
-
 }

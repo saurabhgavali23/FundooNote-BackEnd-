@@ -33,14 +33,14 @@ public class UserService implements IUserService {
 		UserDetails userDetails = new UserDetails(userDTO);
 		UserDetails details = userRepository.save(userDetails);
 
-		ConfirmationToken confirmationToken = new ConfirmationToken(userDetails);
-		confirmationTokenRepository.save(confirmationToken);
+//		ConfirmationToken confirmationToken = new ConfirmationToken(userDetails);
+//		confirmationTokenRepository.save(confirmationToken);
 
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(details.email);
 		mailMessage.setSubject("Complete Registration");
 		mailMessage.setText("To Confirm Your Account, please click here : "
-				+ "http://localhost:8080/fundoonote/confirm-account?token=" + confirmationToken.confirmationToken);
+				+ "http://localhost:8080/fundoonote/confirm-account?token=" + details.id);
 		emailSenderService.sendEmail(mailMessage);
 		return "User Added Successfully";
 	}
