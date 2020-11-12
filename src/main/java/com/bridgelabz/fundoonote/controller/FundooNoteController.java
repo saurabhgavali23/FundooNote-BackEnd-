@@ -1,121 +1,49 @@
 package com.bridgelabz.fundoonote.controller;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import com.bridgelabz.fundoonote.exception.UserAlreadyPresentException;
+import com.bridgelabz.fundoonote.dto.NoteDTO;
+import com.bridgelabz.fundoonote.dto.ResponseDTO;
+import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.module.UserDetails;
+import com.bridgelabz.fundoonote.repository.NoteRepository;
+import com.bridgelabz.fundoonote.repository.UserRepository;
+import com.bridgelabz.fundoonote.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.bridgelabz.fundoonote.dto.ResponseDTO;
-import com.bridgelabz.fundoonote.dto.UserDTO;
-import com.bridgelabz.fundoonote.exception.FundooNoteException;
-import com.bridgelabz.fundoonote.module.UserDetails;
-import com.bridgelabz.fundoonote.repository.UserRepository;
-import com.bridgelabz.fundoonote.service.UserService;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/fundoonote")
-@CrossOrigin(origins = "*")
+@RequestMapping("/fundoonote/note")
+@CrossOrigin("*")
 public class FundooNoteController {
 
     @Autowired
-    UserService userService;
+    NoteService noteService;
+
+    @Autowired
+    NoteRepository noteRepository;
 
     @Autowired
     UserRepository userRepository;
 
-
-    @PostMapping("/user")
-    public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
+    @PostMapping("/save_note")
+    public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestParam("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            throw new FundooNoteException("invalid data");
+            throw new FundooNoteException("Invalid_Data");
         }
-        Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
-        if (byEmailId.isPresent()) {
-            throw new UserAlreadyPresentException("User_Already_Registered");
-        }
-        String message = userService.addUser(userDTO);
-        ResponseDTO userData = new ResponseDTO(message);
-        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
-    }
+        UserDetails userDetails = userRepository.findById(userToken)
+                .orElseThrow(()-> new FundooNoteException("Invalid_user"));
 
-    @GetMapping("/confirm-account")
-    public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
+        noteService.SaveNote(noteDTO);
 
-        userService.verifyAccount(confirmationToken);
-        ResponseDTO userData = new ResponseDTO("User Verified");
-        String redirectURL = "http://localhost:3000/successpage";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(redirectURL));
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .headers(headers).build();
-    }
+        ResponseDTO responseDTO = new ResponseDTO("Note_Added_Successfully");
 
-    @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> verifyAccount(@RequestBody UserDTO userDTO) {
-
-        UserDetails responseMessage = userService.loginUser(userDTO.email, userDTO.password);
-        ResponseDTO userData = new ResponseDTO("Login Successfully",responseMessage);
-
-        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
-    }
-
-    @GetMapping("/forgot-password")
-    public ResponseEntity<ResponseDTO> forgetPassword(@RequestParam("email") String email) {
-
-
-        UserDetails findByEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new FundooNoteException("Invalid Email Id"));
-
-        userService.forgotPassword(findByEmail);
-
-        ResponseDTO userData = new ResponseDTO("Password Reset Link Sent to Email");
-        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
-    }
-
-    @GetMapping("/confirm-reset-password")
-    public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestParam("token") String confirmationToken) {
-
-        userService.confirmPassword(confirmationToken);
-        String redirectURL = "http://localhost:3000/confirmpassword?token=" + confirmationToken;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(redirectURL));
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .headers(headers).build();
-    }
-
-    @PostMapping("/change-password")
-    public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestParam("token") String userToken) {
-
-        userService.changePassword(data, userToken);
-        ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
-
-        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
-    }
-
-    @GetMapping("/user_records")
-    public ResponseEntity<ResponseDTO> getUserRecords(){
-
-        List allUserRecords = userService.getAllUserRecords();
-
-        ResponseDTO userList = new ResponseDTO(allUserRecords);
-
-        return new ResponseEntity<ResponseDTO>(userList, HttpStatus.OK);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
