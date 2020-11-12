@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.bridgelabz.fundoonote.exception.UserAlreadyPresentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,13 +43,12 @@ public class FundooNoteController {
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            throw new FundooNoteException(FundooNoteException.ExceptionType.INVALID_DATA, "invalid data");
+            throw new FundooNoteException("invalid data");
         }
         Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
         if (byEmailId.isPresent()) {
-            throw new FundooNoteException(FundooNoteException.ExceptionType.USER_ALREADY_REGISTERED,
-                    "User_Already_Registered");
+            throw new UserAlreadyPresentException("User_Already_Registered");
         }
         String message = userService.addUser(userDTO);
         ResponseDTO userData = new ResponseDTO(message);
@@ -81,7 +81,7 @@ public class FundooNoteController {
 
 
         UserDetails findByEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid Email Id"));
+                .orElseThrow(() -> new FundooNoteException("Invalid Email Id"));
 
         userService.forgotPassword(findByEmail);
 

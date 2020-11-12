@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonote.service;
 
+import com.bridgelabz.fundoonote.exception.DataNotFoundException;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,15 +64,15 @@ public class UserService implements IUserService {
 	public UserDetails loginUser(String email, String password) {
 
 		UserDetails userDetails = userRepository.findByEmail(email)
-				.orElseThrow(()-> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL,"Invalid Email Id"));
+				.orElseThrow(()-> new FundooNoteException("Invalid Email Id"));
 
 		if (!encoder.matches(password, userDetails.password)) {
-			throw new FundooNoteException(FundooNoteException.ExceptionType.INVALID_PASSWORD, "Invalid_Password");
+			throw new FundooNoteException("Invalid_Password");
 		}
 
 		UserDetails userEmailConfirmation = userRepository.findByEmailVerificatioin(email);
 		if (userEmailConfirmation == null) {
-			throw new FundooNoteException(FundooNoteException.ExceptionType.ACCOUNT_NOT_VALID, "Invalid_Account");
+			throw new FundooNoteException("Invalid_Account");
 		}
 		return userDetails;
 	}
@@ -80,13 +81,13 @@ public class UserService implements IUserService {
 	public String verifyAccount(String userToken) {
 
 		UserDetails token = userRepository.findById(userToken)
-				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link"));
+				.orElseThrow(() -> new FundooNoteException("Invalid_link"));
 
 		UserDetails user = userRepository.findByEmail(token.email)
-				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
+				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
 
 		if (!jwtToken.validateToken(userToken,token.email))
-			throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_EXPIRED, "Link_Expired");
+			throw new FundooNoteException("Link_Expired");
 
 		user.setVerified(true);
 		userRepository.save(user);
@@ -96,10 +97,10 @@ public class UserService implements IUserService {
 	@Override
 	public void confirmPassword(String userToken) {
 		UserDetails user = userRepository.findById(userToken)
-				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
+				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
 
 		if(!jwtToken.validateToken(userToken,user.email)){
-			throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link");
+			throw new FundooNoteException("Invalid_link");
 		}
 		user.setVerified(true);
 		userRepository.save(user);
@@ -109,10 +110,10 @@ public class UserService implements IUserService {
 	public void changePassword(UserDTO userDTO, String userToken) {
 
 		UserDetails user = userRepository.findById(userToken)
-				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_USER, "Invalid_User"));
+				.orElseThrow(() -> new FundooNoteException("Invalid_User"));
 
 		if(!jwtToken.validateToken(userToken, user.email)){
-			throw new FundooNoteException(FundooNoteException.ExceptionType.INVALID_USER, "Invlid_User");
+			throw new FundooNoteException("Invalid_User");
 		}
 
 		String newPassword = encoder.encode(userDTO.password);
@@ -128,6 +129,6 @@ public class UserService implements IUserService {
 		if(userDetailsList != null)
 			return userDetailsList;
 
-		throw new FundooNoteException(FundooNoteException.ExceptionType.Users_Not_Found, "User_Not_Found");
+		throw new DataNotFoundException("Users_Not_Found");
 	}
 }

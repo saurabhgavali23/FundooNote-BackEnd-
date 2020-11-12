@@ -21,11 +21,6 @@ public class EmailSenderService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-//	@Autowired
-//	public EmailSenderService(JavaMailSender javaMailSender) {
-//		this.javaMailSender = javaMailSender;
-//	}
-
 	private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 	public void sendEmail(UserDetails userDetail, ConfirmationToken token) {
@@ -45,7 +40,7 @@ public class EmailSenderService {
                 javaMailSender.send(mailMessage);
                 
             } catch (Exception e) {
-                throw new FundooNoteException(FundooNoteException.ExceptionType.INTERNAL_SERVER_ERROR,"INTERNAL_SERVER_ERROR");
+                throw new FundooNoteException("INTERNAL_SERVER_ERROR");
             }
 		});
 	}
