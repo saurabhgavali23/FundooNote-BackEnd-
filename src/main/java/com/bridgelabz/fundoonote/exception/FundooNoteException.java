@@ -10,8 +10,8 @@ public class FundooNoteException extends RuntimeException {
 
 	public enum ExceptionType {
 		INVALID_DATA, USER_ALREADY_REGISTERED, LINK_IS_INVALID, INVALID_USER, 
-		ACCOUNT_NOT_VALID, INVALID_EMAIL, INTERNAL_SERVER_ERROR, INVALID_PASSWORD, 
-		LINK_IS_EXPIRED
+		ACCOUNT_NOT_VALID, INVALID_EMAIL, INTERNAL_SERVER_ERROR, INVALID_PASSWORD,
+        Users_Not_Found, LINK_IS_EXPIRED
 	}
 
 	public FundooNoteException(ExceptionType type, String message) {

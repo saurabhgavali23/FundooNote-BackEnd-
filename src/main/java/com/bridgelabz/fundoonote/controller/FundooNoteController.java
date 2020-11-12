@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonote.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -106,5 +107,15 @@ public class FundooNoteController {
         ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
 
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
+    }
+
+    @GetMapping("/user_records")
+    public ResponseEntity<ResponseDTO> getUserRecords(){
+
+        List allUserRecords = userService.getAllUserRecords();
+
+        ResponseDTO userList = new ResponseDTO(allUserRecords);
+
+        return new ResponseEntity<ResponseDTO>(userList, HttpStatus.OK);
     }
 }

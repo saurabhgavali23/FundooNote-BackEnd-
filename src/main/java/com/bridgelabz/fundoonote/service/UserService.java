@@ -8,10 +8,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.dto.UserDTO;
-import com.bridgelabz.fundoonote.module.ConfirmationToken;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {
@@ -119,4 +120,14 @@ public class UserService implements IUserService {
 		userRepository.save(user);
 	}
 
+	@Override
+	public List getAllUserRecords() {
+
+		List<UserDetails> userDetailsList = userRepository.findAll();
+
+		if(userDetailsList != null)
+			return userDetailsList;
+
+		throw new FundooNoteException(FundooNoteException.ExceptionType.Users_Not_Found, "User_Not_Found");
+	}
 }

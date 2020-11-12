@@ -2,12 +2,15 @@ package com.bridgelabz.fundoonote.dto;
 
 import com.bridgelabz.fundoonote.module.UserDetails;
 
+import java.util.List;
+
 public class ResponseDTO {
 
 	public UserDTO userDTO;
 	public String message;
 	public int otp;
 	public UserDetails userDetails;
+	public List userList;
 
 	public ResponseDTO(String message, UserDetails userDetails) {
 		this.message = message;
@@ -28,4 +31,7 @@ public class ResponseDTO {
 		this.message = message;
 	}
 
+	public ResponseDTO(List allUserRecords) {
+		this.userList = allUserRecords;
+	}
 }
