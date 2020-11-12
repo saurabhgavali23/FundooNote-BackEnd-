@@ -10,4 +10,6 @@ public interface IUserService {
     void forgotPassword(UserDetails email);
 
     UserDetails loginUser(String email, String password);
+
+    String verifyAccount(String token);
 }

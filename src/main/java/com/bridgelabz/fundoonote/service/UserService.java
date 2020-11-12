@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonote.service;
 
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,14 +28,14 @@ public class UserService implements IUserService {
 	@Autowired
 	BCryptPasswordEncoder encoder;
 
+	@Autowired
+	JwtToken jwtToken;
+
 	@Override
 	public String addUser(UserDTO userDTO) {
 		
 		UserDetails userDetails = new UserDetails(userDTO);
 		UserDetails details = userRepository.save(userDetails);
-
-//		ConfirmationToken confirmationToken = new ConfirmationToken(userDetails);
-//		confirmationTokenRepository.save(confirmationToken);
 
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(details.email);
@@ -75,5 +76,22 @@ public class UserService implements IUserService {
 			throw new FundooNoteException(FundooNoteException.ExceptionType.ACCOUNT_NOT_VALID, "Invalid_Account");
 		}
 		return userDetails;
+	}
+
+	@Override
+	public String verifyAccount(String userToken) {
+
+		UserDetails token = userRepository.findById(userToken)
+				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link"));
+
+		UserDetails user = userRepository.findByEmail(token.email)
+				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
+
+		if (!jwtToken.validateToken(userToken,token.email))
+			throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_EXPIRED, "Link_Expired");
+
+		user.setVerified(true);
+		userRepository.save(user);
+		return "User Verified";
 	}
 }

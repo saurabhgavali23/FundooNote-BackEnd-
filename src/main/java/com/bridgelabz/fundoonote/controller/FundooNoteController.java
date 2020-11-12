@@ -69,18 +69,8 @@ public class FundooNoteController {
     @GetMapping("/confirm-account")
     public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
 
-        UserDetails token = userRepository.findById(confirmationToken)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link"));
-
-        UserDetails user = userRepository.findByEmail(token.email)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
-
-        if (jwtToken.validateToken(confirmationToken,token.email))
-            throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_EXPIRED, "Link_Expired");
-
-        user.setVerified(true);
-        userRepository.save(user);
-        ResponseDTO userData = new ResponseDTO("User Verified", user);
+        userService.verifyAccount(confirmationToken);
+        ResponseDTO userData = new ResponseDTO("User Verified");
         String redirectURL = "http://localhost:3000/successpage";
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(redirectURL));
