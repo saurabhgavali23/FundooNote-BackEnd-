@@ -47,17 +47,14 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void forgotPassword(UserDetails findByEmail) {
+	public void forgotPassword(UserDetails userDetails) {
 		
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		
-		ConfirmationToken token = new ConfirmationToken(findByEmail);
-		confirmationTokenRepository.saveNewTokenAndTime(token.confirmationToken, token.createdDate, token.user.id);
-		
-		mailMessage.setTo(findByEmail.email);
+
+		mailMessage.setTo(userDetails.email);
 		mailMessage.setSubject("Complete Password Reset");
 		mailMessage.setText("To complete the password reset process, please click here: "
-				+"http://localhost:8080/fundoonote/confirm-reset-password?token="+token.confirmationToken);
+				+"http://localhost:8080/fundoonote/confirm-reset-password?token="+userDetails.id);
 		emailSenderService.sendEmail(mailMessage);	
 	}
 
@@ -93,5 +90,17 @@ public class UserService implements IUserService {
 		user.setVerified(true);
 		userRepository.save(user);
 		return "User Verified";
+	}
+
+	@Override
+	public void confirmPassword(String userToken) {
+		UserDetails user = userRepository.findById(userToken)
+				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
+
+		if(!jwtToken.validateToken(userToken,user.email)){
+			throw new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link");
+		}
+		user.setVerified(true);
+		userRepository.save(user);
 	}
 }

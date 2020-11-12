@@ -12,4 +12,6 @@ public interface IUserService {
     UserDetails loginUser(String email, String password);
 
     String verifyAccount(String token);
+
+    void confirmPassword(String userToken);
 }

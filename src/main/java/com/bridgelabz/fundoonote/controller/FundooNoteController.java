@@ -103,14 +103,8 @@ public class FundooNoteController {
     @GetMapping("/confirm-reset-password")
     public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestParam("token") String confirmationToken) {
 
-        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.LINK_IS_INVALID, "Invlid_link"));
-
-        UserDetails user = userRepository.findByEmail(token.user.email)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
-        user.setVerified(true);
-        userRepository.save(user);
-        String redirectURL = "http://localhost:3000/confirmpassword?token=" + token.confirmationToken;
+        userService.confirmPassword(confirmationToken);
+        String redirectURL = "http://localhost:3000/confirmpassword?token=" + confirmationToken;
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(redirectURL));
         return ResponseEntity.status(HttpStatus.FOUND)
