@@ -5,12 +5,10 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.dto.UserDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
-import com.bridgelabz.fundoonote.module.ConfirmationToken;
 import com.bridgelabz.fundoonote.module.UserDetails;
-import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.service.UserService;
 
@@ -38,16 +34,8 @@ public class FundooNoteController {
     UserService userService;
 
     @Autowired
-    ConfirmationTokenRepository confirmationTokenRepository;
-
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    BCryptPasswordEncoder encoder;
-
-    @Autowired
-    JwtToken jwtToken;
 
     @PostMapping("/user")
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
@@ -114,17 +102,8 @@ public class FundooNoteController {
     @PostMapping("/change-password")
     public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestParam("token") String userToken) {
 
-        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(userToken)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_USER, "Invlid_User"));
-
-        UserDetails user = userRepository.findByEmail(token.user.email)
-                .orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_EMAIL, "Invalid_Email"));
-
-        String newPassword = encoder.encode(data.password);
-        user.setPassword(newPassword);
-        userRepository.save(user);
-
-        ResponseDTO userData = new ResponseDTO("Password Changed Successfully", user);
+        userService.changePassword(data, userToken);
+        ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
 
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
     }

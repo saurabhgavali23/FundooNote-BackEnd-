@@ -14,4 +14,6 @@ public interface IUserService {
     String verifyAccount(String token);
 
     void confirmPassword(String userToken);
+
+    void changePassword(UserDTO userDTO, String userToken);
 }

@@ -103,4 +103,20 @@ public class UserService implements IUserService {
 		user.setVerified(true);
 		userRepository.save(user);
 	}
+
+	@Override
+	public void changePassword(UserDTO userDTO, String userToken) {
+
+		UserDetails user = userRepository.findById(userToken)
+				.orElseThrow(() -> new FundooNoteException(FundooNoteException.ExceptionType.INVALID_USER, "Invalid_User"));
+
+		if(!jwtToken.validateToken(userToken, user.email)){
+			throw new FundooNoteException(FundooNoteException.ExceptionType.INVALID_USER, "Invlid_User");
+		}
+
+		String newPassword = encoder.encode(userDTO.password);
+		user.setPassword(newPassword);
+		userRepository.save(user);
+	}
+
 }
