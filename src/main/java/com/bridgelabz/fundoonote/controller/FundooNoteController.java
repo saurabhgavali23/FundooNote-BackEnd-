@@ -35,7 +35,7 @@ public class FundooNoteController {
     JwtToken jwtToken;
 
     @PostMapping("/save_note")
-    public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestParam("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
+    public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestHeader("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new FundooNoteException("Invalid_Data");
@@ -54,7 +54,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/noteList")
-    public ResponseEntity<ResponseDTO> noteList(@RequestParam("token") String userToken){
+    public ResponseEntity<ResponseDTO> noteList(@RequestHeader("token") String userToken){
 
         long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
