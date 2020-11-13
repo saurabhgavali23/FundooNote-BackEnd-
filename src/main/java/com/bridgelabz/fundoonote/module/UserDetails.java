@@ -26,10 +26,10 @@ import java.util.UUID;
 @Component
 public class UserDetails implements Serializable {
 
-	public String id;
 	@Id
-	@Column(name = "user_Id")
-	public String userId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public String id;
+
 	public String firstName;
 	public String lastName;
 	@JsonIgnore
@@ -63,8 +63,6 @@ public class UserDetails implements Serializable {
 	}
 
 	public UserDetails(UserDTO fundooDto) {
-		this.id = new JwtToken().generateToken(fundooDto.email);
-		this.userId = Long.toString(UUID.randomUUID().getMostSignificantBits(), 36);
 		this.createdDate = new Date();
 		this.firstName = fundooDto.firstName;
 		this.lastName = fundooDto.lastName;

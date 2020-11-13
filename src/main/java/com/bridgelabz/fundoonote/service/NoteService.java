@@ -31,7 +31,7 @@ public class NoteService implements INoteService {
     @Override
     public List getNoteList(UserDetails userDetails) {
 
-        List<NoteDetails> noteList = noteRepository.getNoteList(userDetails.userId);
+        List<NoteDetails> noteList = noteRepository.getNoteList(userDetails.id);
 
         if(noteList == null)
             throw new FundooNoteException("Notes_Not_Found");
