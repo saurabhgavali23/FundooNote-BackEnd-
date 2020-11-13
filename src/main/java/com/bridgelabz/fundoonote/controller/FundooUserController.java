@@ -12,13 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.dto.UserDTO;
@@ -56,7 +50,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/confirm-account")
-    public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
+    public ResponseEntity<ResponseDTO> confirmAccount(@RequestHeader("token") String confirmationToken) {
 
         userService.verifyAccount(confirmationToken);
         ResponseDTO userData = new ResponseDTO("User Verified");
@@ -77,7 +71,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/forgot-password")
-    public ResponseEntity<ResponseDTO> forgetPassword(@RequestParam("email") String email) {
+    public ResponseEntity<ResponseDTO> forgetPassword(@RequestHeader("email") String email) {
 
 
         UserDetails findByEmail = userRepository.findByEmail(email)
@@ -90,7 +84,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/confirm-reset-password")
-    public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestParam("token") String confirmationToken) {
+    public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestHeader("token") String confirmationToken) {
 
         userService.confirmPassword(confirmationToken);
         String redirectURL = "http://localhost:3000/confirmpassword?token=" + confirmationToken;
@@ -101,7 +95,7 @@ public class FundooUserController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestParam("token") String userToken) {
+    public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestHeader("token") String userToken) {
 
         userService.changePassword(data, userToken);
         ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
