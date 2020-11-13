@@ -15,6 +15,7 @@ import java.util.UUID;
 public class NoteDetails implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String noteId;
 
     private String title;
@@ -31,7 +32,6 @@ public class NoteDetails implements Serializable {
     private UserDetails userDetails;
 
     public NoteDetails(NoteDTO noteDTO, UserDetails userDetails){
-        this.noteId = Long.toString(UUID.randomUUID().getMostSignificantBits(), 36);
         this.createdDate = new Date();
         this.title = noteDTO.title;
         this.description = noteDTO.description;

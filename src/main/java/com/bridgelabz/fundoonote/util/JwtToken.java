@@ -14,7 +14,7 @@ public class JwtToken {
 
     private String secretToken = "SecretKey";
 
-    public String getUsernameFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -48,8 +48,8 @@ public class JwtToken {
         return compact;
     }
 
-    public Boolean validateToken(String token, String email) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(email) && !isTokenExpired(token));
+    public Boolean validateToken(String token, String id) {
+        final String username = getUserIdFromToken(token);
+        return (username.equals(id) && !isTokenExpired(token));
     }
 }

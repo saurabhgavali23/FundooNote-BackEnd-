@@ -9,5 +9,5 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<NoteDetails, Integer> {
 
     @Query(value = "SELECT * FROM note_details u WHERE u.user_id =?1", nativeQuery = true)
-    List<NoteDetails> getNoteList(String userId);
+    List<NoteDetails> getNoteList(Long userId);
 }

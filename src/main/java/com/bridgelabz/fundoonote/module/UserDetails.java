@@ -28,7 +28,7 @@ public class UserDetails implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public String id;
+	public Long id;
 
 	public String firstName;
 	public String lastName;

@@ -38,12 +38,13 @@ public class UserService implements IUserService {
 		
 		UserDetails userDetails = new UserDetails(userDTO);
 		UserDetails details = userRepository.save(userDetails);
+		String token = jwtToken.generateToken(userDetails.id.toString());
 
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(details.email);
 		mailMessage.setSubject("Complete Registration");
 		mailMessage.setText("To Confirm Your Account, please click here : "
-				+ "http://localhost:8080/fundoonote/confirm-account?token=" + details.id);
+				+ "http://localhost:8080/fundoonote/confirm-account?token=" + token);
 		emailSenderService.sendEmail(mailMessage);
 		return "User Added Successfully";
 	}
@@ -80,13 +81,15 @@ public class UserService implements IUserService {
 	@Override
 	public String verifyAccount(String userToken) {
 
-		UserDetails token = userRepository.findById(userToken)
+		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+		UserDetails token = userRepository.findById(userTokens)
 				.orElseThrow(() -> new FundooNoteException("Invalid_link"));
 
 		UserDetails user = userRepository.findByEmail(token.email)
 				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
 
-		if (!jwtToken.validateToken(userToken,token.email))
+		if (!jwtToken.validateToken(userToken,token.id.toString()))
 			throw new FundooNoteException("Link_Expired");
 
 		user.setVerified(true);
@@ -96,7 +99,10 @@ public class UserService implements IUserService {
 
 	@Override
 	public void confirmPassword(String userToken) {
-		UserDetails user = userRepository.findById(userToken)
+
+		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+		UserDetails user = userRepository.findById(userTokens)
 				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
 
 		if(!jwtToken.validateToken(userToken,user.email)){
@@ -109,7 +115,9 @@ public class UserService implements IUserService {
 	@Override
 	public void changePassword(UserDTO userDTO, String userToken) {
 
-		UserDetails user = userRepository.findById(userToken)
+		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+		UserDetails user = userRepository.findById(userTokens)
 				.orElseThrow(() -> new FundooNoteException("Invalid_User"));
 
 		if(!jwtToken.validateToken(userToken, user.email)){

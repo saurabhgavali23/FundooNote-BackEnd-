@@ -7,6 +7,7 @@ import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.service.NoteService;
+import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class FundooNoteController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    JwtToken jwtToken;
+
     @PostMapping("/save_note")
     public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestParam("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
 
@@ -37,7 +41,9 @@ public class FundooNoteController {
             throw new FundooNoteException("Invalid_Data");
         }
 
-        UserDetails userDetails = userRepository.findById(userToken)
+        long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userTokens)
                 .orElseThrow(()-> new FundooNoteException("Invalid_user"));
 
         noteService.SaveNote(noteDTO, userDetails);
@@ -50,7 +56,9 @@ public class FundooNoteController {
     @GetMapping("/noteList")
     public ResponseEntity<ResponseDTO> noteList(@RequestParam("token") String userToken){
 
-        UserDetails userDetails = userRepository.findById(userToken)
+        long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userTokens)
                 .orElseThrow(()-> new FundooNoteException("Invalid_User"));
 
         List noteList = noteService.getNoteList(userDetails);
