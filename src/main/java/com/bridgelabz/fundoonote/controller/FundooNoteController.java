@@ -14,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/fundoonote/note")
@@ -43,6 +43,19 @@ public class FundooNoteController {
         noteService.SaveNote(noteDTO, userDetails);
 
         ResponseDTO responseDTO = new ResponseDTO("Note_Added_Successfully");
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/noteList")
+    public ResponseEntity<ResponseDTO> noteList(@RequestParam("token") String userToken){
+
+        UserDetails userDetails = userRepository.findById(userToken)
+                .orElseThrow(()-> new FundooNoteException("Invalid_User"));
+
+        List noteList = noteService.getNoteList(userDetails);
+
+        ResponseDTO responseDTO = new ResponseDTO(noteList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

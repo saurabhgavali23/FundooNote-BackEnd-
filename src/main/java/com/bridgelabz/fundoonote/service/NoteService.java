@@ -8,6 +8,8 @@ import com.bridgelabz.fundoonote.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoteService implements INoteService {
 
@@ -24,5 +26,16 @@ public class NoteService implements INoteService {
         if(details == null){
             throw new FundooNoteException("Note_Not_Save");
         }
+    }
+
+    @Override
+    public List getNoteList(UserDetails userDetails) {
+
+        List<NoteDetails> noteList = noteRepository.getNoteList(userDetails.userId);
+
+        if(noteList == null)
+            throw new FundooNoteException("Notes_Not_Found");
+
+        return noteList;
     }
 }
