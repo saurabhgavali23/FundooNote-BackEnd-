@@ -16,6 +16,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +26,9 @@ import java.util.UUID;
 @Component
 public class UserDetails implements Serializable {
 
-	@Id
 	public String id;
+	@Id
+	@Column(name = "user_Id")
 	public String userId;
 	public String firstName;
 	public String lastName;
@@ -52,6 +54,10 @@ public class UserDetails implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@OneToMany(mappedBy = "userDetails", fetch = FetchType.LAZY,
+	 cascade = CascadeType.ALL)
+	private Set<NoteDetails> noteDetails;
 
 	public UserDetails() {
 	}

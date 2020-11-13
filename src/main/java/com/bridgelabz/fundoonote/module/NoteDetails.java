@@ -26,7 +26,11 @@ public class NoteDetails implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public NoteDetails(NoteDTO noteDTO){
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_Id", nullable = false)
+    private UserDetails userDetails;
+
+    public NoteDetails(NoteDTO noteDTO, UserDetails userDetails){
         this.noteId = Long.toString(UUID.randomUUID().getMostSignificantBits(), 36);
         this.createdDate = new Date();
         this.title = noteDTO.title;
@@ -34,5 +38,6 @@ public class NoteDetails implements Serializable {
         this.isPined = noteDTO.isPined;
         this.isArchived = noteDTO.isArchived;
         this.color = noteDTO.color;
+        this.userDetails = userDetails;
     }
 }

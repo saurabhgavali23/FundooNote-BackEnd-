@@ -40,7 +40,7 @@ public class FundooNoteController {
         UserDetails userDetails = userRepository.findById(userToken)
                 .orElseThrow(()-> new FundooNoteException("Invalid_user"));
 
-        noteService.SaveNote(noteDTO);
+        noteService.SaveNote(noteDTO, userDetails);
 
         ResponseDTO responseDTO = new ResponseDTO("Note_Added_Successfully");
 
