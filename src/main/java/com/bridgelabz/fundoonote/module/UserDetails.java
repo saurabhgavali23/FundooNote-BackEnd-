@@ -26,9 +26,13 @@ import java.util.UUID;
 @Component
 public class UserDetails implements Serializable {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
+
+	@Transient
+	public String tokenId;
 
 	public String firstName;
 	public String lastName;
@@ -43,6 +47,10 @@ public class UserDetails implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date createdDate;
 
+	public void setTokenId(String tokenId) {
+		this.tokenId = tokenId;
+	}
+
 	public boolean isVerified() {
 		return isVerified;
 	}
@@ -55,6 +63,7 @@ public class UserDetails implements Serializable {
 		this.password = password;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "userDetails", fetch = FetchType.LAZY,
 	 cascade = CascadeType.ALL)
 	private Set<NoteDetails> noteDetails;

@@ -75,6 +75,8 @@ public class UserService implements IUserService {
 		if (userEmailConfirmation == null) {
 			throw new FundooNoteException("Invalid_Account");
 		}
+		String userId = jwtToken.generateToken(userDetails.id.toString());
+		userDetails.setTokenId(userId);
 		return userDetails;
 	}
 
