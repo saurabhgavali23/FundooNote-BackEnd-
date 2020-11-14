@@ -14,6 +14,7 @@ import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -136,8 +137,11 @@ public class UserService implements IUserService {
 
 		List<UserDetails> userDetailsList = userRepository.findAll();
 
-		if(userDetailsList != null)
+		if(userDetailsList != null) {
+			userDetailsList.stream()
+					.forEach(item -> item.setTokenId(jwtToken.generateToken(item.id.toString())));
 			return userDetailsList;
+		}
 
 		throw new DataNotFoundException("Users_Not_Found");
 	}
