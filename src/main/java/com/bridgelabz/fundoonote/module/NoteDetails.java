@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonote.module;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class NoteDetails implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String noteId;
+    private Long noteId;
 
     private String title;
     private String description;
