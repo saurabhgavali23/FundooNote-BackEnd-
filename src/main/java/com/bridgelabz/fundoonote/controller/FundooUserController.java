@@ -50,7 +50,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/confirm-account")
-    public ResponseEntity<ResponseDTO> confirmAccount(@RequestHeader("token") String confirmationToken) {
+    public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
 
         userService.verifyAccount(confirmationToken);
         ResponseDTO userData = new ResponseDTO("User Verified");
