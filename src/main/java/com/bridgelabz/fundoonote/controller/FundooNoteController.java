@@ -127,4 +127,22 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/archiveNoteList")
+    public ResponseEntity<ResponseDTO> getArchiveNotes(@RequestHeader("token") String userToken){
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found");
+
+        List archiveNotes = noteService.getArchiveNotes(userId);
+
+        ResponseDTO responseDTO = new ResponseDTO(archiveNotes);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

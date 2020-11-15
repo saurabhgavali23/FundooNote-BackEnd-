@@ -20,4 +20,6 @@ public interface INoteService {
     String updateColor(NoteDTO noteDTO);
 
     List getPinNotes(Long userToken);
+
+    List getArchiveNotes(Long userId);
 }

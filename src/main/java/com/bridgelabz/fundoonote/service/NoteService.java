@@ -134,4 +134,15 @@ public class NoteService implements INoteService {
 
         return pinNoteList;
     }
+
+    @Override
+    public List getArchiveNotes(Long userId) {
+
+        List<NoteDetails> archiveNoteList = noteRepository.getArchiveNoteList(userId);
+
+        if(archiveNoteList.isEmpty())
+            throw new FundooNoteException("PinNotes_Not_Found");
+
+        return archiveNoteList;
+    }
 }
