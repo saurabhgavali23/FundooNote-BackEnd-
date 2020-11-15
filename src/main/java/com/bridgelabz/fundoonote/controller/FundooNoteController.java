@@ -89,4 +89,14 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @PostMapping("/trashNote")
+    public ResponseEntity<ResponseDTO> updateTrash(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.updateTrash(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
 }

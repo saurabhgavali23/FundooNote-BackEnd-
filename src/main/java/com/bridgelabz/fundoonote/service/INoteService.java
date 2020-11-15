@@ -14,4 +14,6 @@ public interface INoteService {
     String updatePin(NoteDTO noteDTO);
 
     String updateArchived(NoteDTO noteDTO);
+
+    String updateTrash(NoteDTO noteDTO);
 }

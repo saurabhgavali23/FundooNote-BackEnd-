@@ -81,4 +81,25 @@ public class NoteService implements INoteService {
         }
         return "ArchiveNote Updated";
     }
+
+    @Override
+    public String updateTrash(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
+
+        Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
+
+        if(!noteId.isPresent())
+            throw new FundooNoteException("Note_Not_Found");
+
+        if(noteDTO.isDeleted == null)
+            throw new FundooNoteException("Field_Must_Not_be_Null");
+
+        int details = noteRepository.updateTrash(noteDetails.isDeleted, noteDetails.noteId);
+
+        if(details == 0){
+            throw new FundooNoteException("TrashNote_Not_Update");
+        }
+        return "TrashNote Updated";
+    }
 }
