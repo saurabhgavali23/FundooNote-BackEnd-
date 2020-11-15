@@ -19,12 +19,12 @@ public class NoteDetails implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long noteId;
 
-    private String title;
-    private String description;
+    public String title;
+    public String description;
     public Boolean isPined;
-    private Boolean isArchived;
-    private Boolean isDeleted;
-    private String color;
+    public Boolean isArchived;
+    public Boolean isDeleted;
+    public String color;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
