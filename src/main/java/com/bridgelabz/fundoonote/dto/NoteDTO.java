@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class NoteDTO {
 
+    public Long noteId;
+
     @NotNull
     @Length(min = 3, max = 255, message = "Invalid Title")
     public String title;

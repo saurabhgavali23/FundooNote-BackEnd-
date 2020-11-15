@@ -10,4 +10,6 @@ public interface INoteService {
     public void SaveNote(NoteDTO noteDTO, UserDetails userDetails);
 
     public List getNoteList(UserDetails userDetails);
+
+    String updatePin(NoteDTO noteDTO);
 }

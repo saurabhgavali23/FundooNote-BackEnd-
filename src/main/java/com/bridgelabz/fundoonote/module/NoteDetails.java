@@ -17,11 +17,11 @@ public class NoteDetails implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long noteId;
+    public Long noteId;
 
     private String title;
     private String description;
-    private Boolean isPined;
+    public Boolean isPined;
     private Boolean isArchived;
     private Boolean isDeleted;
     private String color;
@@ -42,5 +42,16 @@ public class NoteDetails implements Serializable {
         this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
         this.userDetails = userDetails;
+    }
+
+    public NoteDetails(NoteDTO noteDTO){
+        this.noteId = noteDTO.noteId;
+        this.createdDate = new Date();
+        this.title = noteDTO.title;
+        this.description = noteDTO.description;
+        this.isPined = noteDTO.isPined;
+        this.isArchived = noteDTO.isArchived;
+        this.isDeleted = noteDTO.isDeleted;
+        this.color = noteDTO.color;
     }
 }

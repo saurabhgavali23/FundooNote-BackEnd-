@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonote.controller;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/fundoonote/note")
@@ -66,5 +68,15 @@ public class FundooNoteController {
         ResponseDTO responseDTO = new ResponseDTO(noteList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/pinUnpinNote")
+    public ResponseEntity<ResponseDTO> updatePin(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.updatePin(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 }
