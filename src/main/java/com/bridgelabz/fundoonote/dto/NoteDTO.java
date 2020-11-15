@@ -22,5 +22,7 @@ public class NoteDTO {
 
     public Boolean isArchived = false;
 
+    public Boolean isDeleted = false;
+
     public String color = "#FFF";
 }

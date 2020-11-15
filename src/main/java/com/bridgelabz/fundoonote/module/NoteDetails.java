@@ -23,6 +23,7 @@ public class NoteDetails implements Serializable {
     private String description;
     private Boolean isPined;
     private Boolean isArchived;
+    private Boolean isDeleted;
     private String color;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,6 +39,7 @@ public class NoteDetails implements Serializable {
         this.description = noteDTO.description;
         this.isPined = noteDTO.isPined;
         this.isArchived = noteDTO.isArchived;
+        this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
         this.userDetails = userDetails;
     }
