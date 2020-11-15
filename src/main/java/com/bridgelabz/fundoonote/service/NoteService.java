@@ -123,4 +123,15 @@ public class NoteService implements INoteService {
         }
         return "ColorNote Updated";
     }
+
+    @Override
+    public List getPinNotes(Long userToken) {
+
+        List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userToken);
+
+        if(pinNoteList.isEmpty())
+            throw new FundooNoteException("PinNotes_Not_Found");
+
+        return pinNoteList;
+    }
 }

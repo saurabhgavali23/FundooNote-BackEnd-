@@ -18,4 +18,6 @@ public interface INoteService {
     String updateTrash(NoteDTO noteDTO);
 
     String updateColor(NoteDTO noteDTO);
+
+    List getPinNotes(Long userToken);
 }

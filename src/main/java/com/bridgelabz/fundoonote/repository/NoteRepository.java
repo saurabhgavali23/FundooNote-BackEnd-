@@ -32,4 +32,7 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
     @Modifying
     @Query(value = "UPDATE note_details u SET u.color =?1 WHERE u.note_id =?2", nativeQuery = true)
     int updateColor(String color, Long noteId);
+
+    @Query(value = "SELECT * FROM note_details u WHERE u.is_pined = 1 AND u.user_id =?1", nativeQuery = true)
+    List<NoteDetails> getPinNoteList(Long userToken);
 }

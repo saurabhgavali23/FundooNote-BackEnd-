@@ -109,4 +109,22 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @GetMapping("/pinNoteList")
+    public ResponseEntity<ResponseDTO> getPinNote(@RequestHeader("token") String userToken){
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found");
+
+        List pinNote = noteService.getPinNotes(userId);
+
+        ResponseDTO responseDTO = new ResponseDTO(pinNote);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
