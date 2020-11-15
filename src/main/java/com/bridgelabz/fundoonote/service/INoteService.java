@@ -26,4 +26,6 @@ public interface INoteService {
     List getTrashNotes(Long userId);
 
     String updateTitleAndDescription(NoteDTO noteDTO);
+
+    String deleteNotePermanently(NoteDTO noteDTO);
 }

@@ -173,4 +173,14 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/note")
+    public ResponseEntity<ResponseDTO> deleteNotePermanently(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.deleteNotePermanently(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
 }
