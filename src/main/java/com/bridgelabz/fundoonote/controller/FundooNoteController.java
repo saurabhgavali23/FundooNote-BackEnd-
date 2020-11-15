@@ -110,6 +110,16 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PostMapping("/titleAndDescriptionNote")
+    public ResponseEntity<ResponseDTO> updateTitleAndDescription(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.updateTitleAndDescription(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
     @GetMapping("/pinNoteList")
     public ResponseEntity<ResponseDTO> getPinNote(@RequestHeader("token") String userToken){
 

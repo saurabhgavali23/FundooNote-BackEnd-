@@ -41,4 +41,9 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
 
     @Query(value = "SELECT * FROM note_details u WHERE u.is_deleted = 1 AND u.user_id =?1", nativeQuery = true)
     List<NoteDetails> getTrashNoteList(Long userId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE note_details u SET u.title =?1, u.description =?2 WHERE u.note_id =?3", nativeQuery = true)
+    int updateTitleAndDescription(String title, String description, Long noteId);
 }

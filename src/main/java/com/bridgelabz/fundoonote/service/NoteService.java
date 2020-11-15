@@ -125,6 +125,27 @@ public class NoteService implements INoteService {
     }
 
     @Override
+    public String updateTitleAndDescription(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
+
+        Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
+
+        if(!noteId.isPresent())
+            throw new FundooNoteException("Note_Not_Found");
+
+        if(noteDTO.title == null && noteDTO.description == null)
+            throw new FundooNoteException("Field_Must_Not_be_Null");
+
+        int details = noteRepository.updateTitleAndDescription(noteDetails.title,noteDetails.description, noteDetails.noteId);
+
+        if(details == 0){
+            throw new FundooNoteException("TitleAndDescriptionNote_Not_Update");
+        }
+        return "TitleDescriptionNote Updated";
+    }
+
+    @Override
     public List getPinNotes(Long userToken) {
 
         List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userToken);

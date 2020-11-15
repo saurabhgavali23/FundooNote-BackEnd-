@@ -24,4 +24,6 @@ public interface INoteService {
     List getArchiveNotes(Long userId);
 
     List getTrashNotes(Long userId);
+
+    String updateTitleAndDescription(NoteDTO noteDTO);
 }
