@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+public class GlobalException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserAlreadyPresentException.class)
     public ResponseEntity<Object> handleNoteFoundException(
