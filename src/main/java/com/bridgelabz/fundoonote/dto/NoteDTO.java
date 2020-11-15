@@ -18,9 +18,9 @@ public class NoteDTO {
     @Length(min = 3, max = 255, message = "Invalid Description")
     public String description;
 
-    public Boolean isPined;
+    public Boolean isPined = false;
 
-    public Boolean isArchived;
+    public Boolean isArchived = false;
 
-    public String color;
+    public String color = "#FFF";
 }
