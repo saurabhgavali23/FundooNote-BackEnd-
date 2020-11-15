@@ -38,4 +38,7 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
 
     @Query(value = "SELECT * FROM note_details u WHERE u.is_archived = 1 AND u.user_id =?1", nativeQuery = true)
     List<NoteDetails> getArchiveNoteList(Long userId);
+
+    @Query(value = "SELECT * FROM note_details u WHERE u.is_deleted = 1 AND u.user_id =?1", nativeQuery = true)
+    List<NoteDetails> getTrashNoteList(Long userId);
 }

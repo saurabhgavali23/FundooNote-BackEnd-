@@ -145,4 +145,22 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/trashNoteList")
+    public ResponseEntity<ResponseDTO> getTrashNotes(@RequestHeader("token") String userToken){
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found");
+
+        List trashNotes = noteService.getTrashNotes(userId);
+
+        ResponseDTO responseDTO = new ResponseDTO(trashNotes);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

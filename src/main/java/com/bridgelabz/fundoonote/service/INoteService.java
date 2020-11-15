@@ -22,4 +22,6 @@ public interface INoteService {
     List getPinNotes(Long userToken);
 
     List getArchiveNotes(Long userId);
+
+    List getTrashNotes(Long userId);
 }
