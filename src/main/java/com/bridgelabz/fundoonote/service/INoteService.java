@@ -16,4 +16,6 @@ public interface INoteService {
     String updateArchived(NoteDTO noteDTO);
 
     String updateTrash(NoteDTO noteDTO);
+
+    String updateColor(NoteDTO noteDTO);
 }

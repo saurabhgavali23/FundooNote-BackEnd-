@@ -102,4 +102,25 @@ public class NoteService implements INoteService {
         }
         return "TrashNote Updated";
     }
+
+    @Override
+    public String updateColor(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
+
+        Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
+
+        if(!noteId.isPresent())
+            throw new FundooNoteException("Note_Not_Found");
+
+        if(noteDTO.color == null)
+            throw new FundooNoteException("Field_Must_Not_be_Null");
+
+        int details = noteRepository.updateColor(noteDetails.color, noteDetails.noteId);
+
+        if(details == 0){
+            throw new FundooNoteException("ColorNote_Not_Update");
+        }
+        return "ColorNote Updated";
+    }
 }

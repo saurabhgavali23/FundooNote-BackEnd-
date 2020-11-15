@@ -99,4 +99,14 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @PostMapping("/colorNote")
+    public ResponseEntity<ResponseDTO> updateColor(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.updateColor(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
 }
