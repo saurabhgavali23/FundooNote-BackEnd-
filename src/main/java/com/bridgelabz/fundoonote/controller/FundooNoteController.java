@@ -79,4 +79,14 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @PostMapping("/archiveNote")
+    public ResponseEntity<ResponseDTO> updateArchive(@RequestBody NoteDTO noteDTO){
+
+        String message = noteService.updateArchived(noteDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
 }

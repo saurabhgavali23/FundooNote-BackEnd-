@@ -60,4 +60,25 @@ public class NoteService implements INoteService {
         }
         return "PinNote Updated";
     }
+
+    @Override
+    public String updateArchived(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
+
+        Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
+
+        if(!noteId.isPresent())
+            throw new FundooNoteException("Note_Not_Found");
+
+        if(noteDTO.isArchived == null)
+            throw new FundooNoteException("Field_Must_Not_be_Null");
+
+        int details = noteRepository.updateArchive(noteDetails.isArchived, noteDetails.noteId);
+
+        if(details == 0){
+            throw new FundooNoteException("ArchiveNote_Not_Update");
+        }
+        return "ArchiveNote Updated";
+    }
 }

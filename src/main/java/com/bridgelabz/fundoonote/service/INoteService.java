@@ -12,4 +12,6 @@ public interface INoteService {
     public List getNoteList(UserDetails userDetails);
 
     String updatePin(NoteDTO noteDTO);
+
+    String updateArchived(NoteDTO noteDTO);
 }

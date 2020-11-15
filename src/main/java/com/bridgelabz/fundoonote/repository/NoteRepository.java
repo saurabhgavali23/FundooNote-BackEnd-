@@ -17,4 +17,9 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
     @Modifying
     @Query(value = "UPDATE note_details u SET u.is_pined =?1 WHERE u.note_id =?2", nativeQuery = true)
     int updatePin(Boolean isPined, Long noteId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE note_details u SET u.is_archived =?1 WHERE u.note_id =?2", nativeQuery = true)
+    int updateArchive(Boolean isArchived, Long noteId);
 }
