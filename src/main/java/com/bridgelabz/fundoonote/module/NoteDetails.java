@@ -1,19 +1,24 @@
 package com.bridgelabz.fundoonote.module;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "noteDetails")
 public class NoteDetails implements Serializable {
+
+    @Transient
+    @Autowired
+    ReminderDetails reminderDetails;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,9 +31,13 @@ public class NoteDetails implements Serializable {
     public Boolean isDeleted;
     public String color;
 
+    @OneToMany
+    public List<ReminderDetails> reminder;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_Id", nullable = false)
     private UserDetails userDetails;

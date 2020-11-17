@@ -3,7 +3,6 @@ package com.bridgelabz.fundoonote.controller;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
-import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
@@ -43,7 +42,13 @@ public class FundooNoteController {
             throw new FundooNoteException("Invalid_Data");
         }
 
-        long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userTokens = Long.parseLong(userIdFromToken);
+
+        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
+
+        if(!validateToken)
+            throw new FundooNoteException("Token_Not_Valid");
 
         UserDetails userDetails = userRepository.findById(userTokens)
                 .orElseThrow(()-> new FundooNoteException("Invalid_user"));
@@ -58,7 +63,13 @@ public class FundooNoteController {
     @GetMapping("/noteList")
     public ResponseEntity<ResponseDTO> noteList(@RequestHeader("token") String userToken){
 
-        long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userTokens = Long.parseLong(userIdFromToken);
+
+        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
+
+        if(!validateToken)
+            throw new FundooNoteException("Token_Not_Valid");
 
         UserDetails userDetails = userRepository.findById(userTokens)
                 .orElseThrow(()-> new FundooNoteException("Invalid_User"));
