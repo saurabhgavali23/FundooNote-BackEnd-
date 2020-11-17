@@ -2,9 +2,7 @@ package com.bridgelabz.fundoonote.module;
 
 import javax.persistence.*;
 
-import com.bridgelabz.fundoonote.util.JwtToken;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +15,6 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @ToString
@@ -64,7 +61,7 @@ public class UserDetails implements Serializable {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "userDetails", fetch = FetchType.LAZY,
+	@OneToMany(fetch = FetchType.LAZY,
 	 cascade = CascadeType.ALL)
 	private Set<NoteDetails> noteDetails;
 

@@ -4,7 +4,8 @@ import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,8 +29,13 @@ public class NoteDetails implements Serializable {
     public String color;
     public String reminder;
 
+    @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date modifiedDate = new Date();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -58,5 +64,9 @@ public class NoteDetails implements Serializable {
         this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
         this.reminder = noteDTO.reminder;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

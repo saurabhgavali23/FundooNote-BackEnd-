@@ -54,7 +54,7 @@ public class NoteService implements INoteService {
         if(noteDTO.isPined == null)
             throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
-        int details = noteRepository.updatePin(noteDetails.isPined, noteDetails.noteId);
+        int details = noteRepository.updatePin(noteDetails.isPined, noteDetails.modifiedDate, noteDetails.noteId);
 
         if(details == 0){
             throw new FundooNoteException("PinNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
@@ -75,7 +75,7 @@ public class NoteService implements INoteService {
         if(noteDTO.isArchived == null)
             throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
-        int details = noteRepository.updateArchive(noteDetails.isArchived, noteDetails.noteId);
+        int details = noteRepository.updateArchive(noteDetails.isArchived, noteDetails.modifiedDate, noteDetails.noteId);
 
         if(details == 0){
             throw new FundooNoteException("ArchiveNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
@@ -96,7 +96,7 @@ public class NoteService implements INoteService {
         if(noteDTO.isDeleted == null)
             throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
-        int details = noteRepository.updateTrash(noteDetails.isDeleted, noteDetails.noteId);
+        int details = noteRepository.updateTrash(noteDetails.isDeleted, noteDetails.modifiedDate, noteDetails.noteId);
 
         if(details == 0){
             throw new FundooNoteException("TrashNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
@@ -117,7 +117,7 @@ public class NoteService implements INoteService {
         if(noteDTO.color == null)
             throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
-        int details = noteRepository.updateColor(noteDetails.color, noteDetails.noteId);
+        int details = noteRepository.updateColor(noteDetails.color, noteDetails.modifiedDate, noteDetails.noteId);
 
         if(details == 0){
             throw new FundooNoteException("ColorNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
@@ -138,7 +138,7 @@ public class NoteService implements INoteService {
         if(noteDTO.title == null && noteDTO.description == null)
             throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
-        int details = noteRepository.updateTitleAndDescription(noteDetails.title,noteDetails.description, noteDetails.noteId);
+        int details = noteRepository.updateTitleAndDescription(noteDetails.title, noteDetails.description, noteDetails.modifiedDate, noteDetails.noteId);
 
         if(details == 0){
             throw new FundooNoteException("TitleAndDescriptionNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
