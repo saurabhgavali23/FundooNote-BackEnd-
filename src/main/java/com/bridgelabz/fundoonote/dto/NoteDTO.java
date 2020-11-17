@@ -1,13 +1,10 @@
 package com.bridgelabz.fundoonote.dto;
 
-import com.bridgelabz.fundoonote.module.ReminderDetails;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,5 +28,5 @@ public class NoteDTO {
 
     public String color = "#FFF";
 
-    public List<String> reminder;
+    public String reminder;
 }

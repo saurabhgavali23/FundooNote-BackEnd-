@@ -16,10 +16,6 @@ import java.util.*;
 @Table(name = "noteDetails")
 public class NoteDetails implements Serializable {
 
-    @Transient
-    @Autowired
-    ReminderDetails reminderDetails;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long noteId;
@@ -30,9 +26,7 @@ public class NoteDetails implements Serializable {
     public Boolean isArchived;
     public Boolean isDeleted;
     public String color;
-
-    @OneToMany
-    public List<ReminderDetails> reminder;
+    public String reminder;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -50,6 +44,7 @@ public class NoteDetails implements Serializable {
         this.isArchived = noteDTO.isArchived;
         this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
+        this.reminder = noteDTO.reminder;
         this.userDetails = userDetails;
     }
 
@@ -62,5 +57,6 @@ public class NoteDetails implements Serializable {
         this.isArchived = noteDTO.isArchived;
         this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
+        this.reminder = noteDTO.reminder;
     }
 }
