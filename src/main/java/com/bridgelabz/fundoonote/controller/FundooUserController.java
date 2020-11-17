@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.bridgelabz.fundoonote.exception.UserAlreadyPresentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ import com.bridgelabz.fundoonote.service.UserService;
 @RequestMapping("/fundoonote")
 @CrossOrigin(origins = "*")
 public class FundooUserController {
+
+    @Value("${frontEndUrl}")
+    private String url;
 
     @Autowired
     UserService userService;
@@ -54,7 +58,7 @@ public class FundooUserController {
 
         userService.verifyAccount(confirmationToken);
         ResponseDTO userData = new ResponseDTO("User Verified");
-        String redirectURL = "http://localhost:3000/successpage";
+        String redirectURL = url+"/successpage";
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(redirectURL));
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -87,7 +91,7 @@ public class FundooUserController {
     public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestHeader("token") String confirmationToken) {
 
         userService.confirmPassword(confirmationToken);
-        String redirectURL = "http://localhost:3000/confirmpassword?token=" + confirmationToken;
+        String redirectURL = url+"/confirmpassword?token=" + confirmationToken;
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(redirectURL));
         return ResponseEntity.status(HttpStatus.FOUND)

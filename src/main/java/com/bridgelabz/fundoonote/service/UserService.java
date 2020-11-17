@@ -4,6 +4,7 @@ import com.bridgelabz.fundoonote.exception.DataNotFoundException;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
+
+	@Value("${localHostUrl}")
+	private String url;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -45,7 +48,7 @@ public class UserService implements IUserService {
 		mailMessage.setTo(details.email);
 		mailMessage.setSubject("Complete Registration");
 		mailMessage.setText("To Confirm Your Account, please click here : "
-				+ "http://localhost:8080/fundoonote/confirm-account?token=" + token);
+				+url+"/fundoonote/confirm-account?token=" + token);
 		emailSenderService.sendEmail(mailMessage);
 		return "User Added Successfully";
 	}
@@ -58,7 +61,7 @@ public class UserService implements IUserService {
 		mailMessage.setTo(userDetails.email);
 		mailMessage.setSubject("Complete Password Reset");
 		mailMessage.setText("To complete the password reset process, please click here: "
-				+"http://localhost:8080/fundoonote/confirm-reset-password?token="+userDetails.id);
+				+url+"/fundoonote/confirm-reset-password?token="+userDetails.id);
 		emailSenderService.sendEmail(mailMessage);	
 	}
 
