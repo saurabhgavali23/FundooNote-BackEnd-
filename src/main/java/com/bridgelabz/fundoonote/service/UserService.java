@@ -2,9 +2,11 @@ package com.bridgelabz.fundoonote.service;
 
 import com.bridgelabz.fundoonote.exception.DataNotFoundException;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.exception.FundooUserException;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,7 +71,7 @@ public class UserService implements IUserService {
 	public UserDetails loginUser(String email, String password) {
 
 		UserDetails userDetails = userRepository.findByEmail(email)
-				.orElseThrow(()-> new FundooNoteException("Invalid Email Id"));
+				.orElseThrow(()-> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
 		if (!encoder.matches(password, userDetails.password)) {
 			throw new FundooNoteException("Invalid_Password");
@@ -90,13 +92,13 @@ public class UserService implements IUserService {
 		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
 		UserDetails token = userRepository.findById(userTokens)
-				.orElseThrow(() -> new FundooNoteException("Invalid_link"));
+				.orElseThrow(() -> new FundooUserException("Invalid_link", HttpStatus.BAD_REQUEST.value()));
 
 		UserDetails user = userRepository.findByEmail(token.email)
-				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
+				.orElseThrow(() -> new FundooUserException("Invalid_Email", HttpStatus.BAD_REQUEST.value()));
 
 		if (!jwtToken.validateToken(userToken,token.id.toString()))
-			throw new FundooNoteException("Link_Expired");
+			throw new FundooUserException("Link_Expired", HttpStatus.BAD_REQUEST.value());
 
 		user.setVerified(true);
 		userRepository.save(user);
@@ -109,10 +111,10 @@ public class UserService implements IUserService {
 		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
 		UserDetails user = userRepository.findById(userTokens)
-				.orElseThrow(() -> new FundooNoteException("Invalid_Email"));
+				.orElseThrow(() -> new FundooUserException("Invalid_Email", HttpStatus.BAD_REQUEST.value()));
 
 		if(!jwtToken.validateToken(userToken,user.email)){
-			throw new FundooNoteException("Invalid_link");
+			throw new FundooUserException("Invalid_link", HttpStatus.BAD_REQUEST.value());
 		}
 		user.setVerified(true);
 		userRepository.save(user);
@@ -124,10 +126,10 @@ public class UserService implements IUserService {
 		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
 		UserDetails user = userRepository.findById(userTokens)
-				.orElseThrow(() -> new FundooNoteException("Invalid_User"));
+				.orElseThrow(() -> new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value()));
 
 		if(!jwtToken.validateToken(userToken, user.email)){
-			throw new FundooNoteException("Invalid_User");
+			throw new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value());
 		}
 
 		String newPassword = encoder.encode(userDTO.password);
@@ -146,6 +148,6 @@ public class UserService implements IUserService {
 			return userDetailsList;
 		}
 
-		throw new DataNotFoundException("Users_Not_Found");
+		throw new FundooUserException("Users_Not_Found", HttpStatus.NOT_FOUND.value());
 	}
 }

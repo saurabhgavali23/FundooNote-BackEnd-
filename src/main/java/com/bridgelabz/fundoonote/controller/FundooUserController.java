@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.bridgelabz.fundoonote.exception.UserAlreadyPresentException;
+import com.bridgelabz.fundoonote.exception.FundooUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +38,7 @@ public class FundooUserController {
 
 
     @PostMapping("/user")
-    public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
+    public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) throws FundooUserException {
 
         if (result.hasErrors()) {
             throw new FundooNoteException("invalid data");
@@ -46,7 +46,7 @@ public class FundooUserController {
         Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
         if (byEmailId.isPresent()) {
-            throw new UserAlreadyPresentException("User_Already_Registered");
+            throw new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value());
         }
         String message = userService.addUser(userDTO);
         ResponseDTO userData = new ResponseDTO(message);
