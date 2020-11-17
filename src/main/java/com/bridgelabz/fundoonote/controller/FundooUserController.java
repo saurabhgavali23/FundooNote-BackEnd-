@@ -41,7 +41,7 @@ public class FundooUserController {
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) throws FundooUserException {
 
         if (result.hasErrors()) {
-            throw new FundooNoteException("invalid data");
+            throw new FundooUserException("invalid data", HttpStatus.BAD_REQUEST.value());
         }
         Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
@@ -79,7 +79,7 @@ public class FundooUserController {
 
 
         UserDetails findByEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new FundooNoteException("Invalid Email Id"));
+                .orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
         userService.forgotPassword(findByEmail);
 

@@ -74,12 +74,12 @@ public class UserService implements IUserService {
 				.orElseThrow(()-> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
 		if (!encoder.matches(password, userDetails.password)) {
-			throw new FundooNoteException("Invalid_Password");
+			throw new FundooUserException("Invalid_Password", HttpStatus.BAD_REQUEST.value());
 		}
 
 		UserDetails userEmailConfirmation = userRepository.findByEmailVerificatioin(email);
 		if (userEmailConfirmation == null) {
-			throw new FundooNoteException("Invalid_Account");
+			throw new FundooUserException("Invalid_Account", HttpStatus.BAD_REQUEST.value());
 		}
 		String userId = jwtToken.generateToken(userDetails.id.toString());
 		userDetails.setTokenId(userId);

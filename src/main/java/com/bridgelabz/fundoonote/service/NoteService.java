@@ -8,6 +8,7 @@ import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.ReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class NoteService implements INoteService {
         reminderRepository.save(reminderDetails);
 
         if(details == null){
-            throw new FundooNoteException("Note_Not_Save");
+            throw new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());
         }
     }
 
@@ -43,7 +44,7 @@ public class NoteService implements INoteService {
         List<NoteDetails> noteList = noteRepository.getNoteList(userDetails.id);
 
         if(noteList == null)
-            throw new FundooNoteException("Notes_Not_Found");
+            throw new FundooNoteException("Notes_Not_Found", HttpStatus.NOT_FOUND.value());
 
         return noteList;
     }
@@ -56,15 +57,15 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.isPined == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         int details = noteRepository.updatePin(noteDetails.isPined, noteDetails.noteId);
 
         if(details == 0){
-            throw new FundooNoteException("PinNote_Not_Update");
+            throw new FundooNoteException("PinNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
         }
         return "PinNote Updated";
     }
@@ -77,15 +78,15 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.isArchived == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         int details = noteRepository.updateArchive(noteDetails.isArchived, noteDetails.noteId);
 
         if(details == 0){
-            throw new FundooNoteException("ArchiveNote_Not_Update");
+            throw new FundooNoteException("ArchiveNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
         }
         return "ArchiveNote Updated";
     }
@@ -98,15 +99,15 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.isDeleted == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         int details = noteRepository.updateTrash(noteDetails.isDeleted, noteDetails.noteId);
 
         if(details == 0){
-            throw new FundooNoteException("TrashNote_Not_Update");
+            throw new FundooNoteException("TrashNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
         }
         return "TrashNote Updated";
     }
@@ -119,15 +120,15 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.color == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         int details = noteRepository.updateColor(noteDetails.color, noteDetails.noteId);
 
         if(details == 0){
-            throw new FundooNoteException("ColorNote_Not_Update");
+            throw new FundooNoteException("ColorNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
         }
         return "ColorNote Updated";
     }
@@ -140,15 +141,15 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.title == null && noteDTO.description == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         int details = noteRepository.updateTitleAndDescription(noteDetails.title,noteDetails.description, noteDetails.noteId);
 
         if(details == 0){
-            throw new FundooNoteException("TitleAndDescriptionNote_Not_Update");
+            throw new FundooNoteException("TitleAndDescriptionNote_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
         }
         return "TitleDescriptionNote Updated";
     }
@@ -159,7 +160,7 @@ public class NoteService implements INoteService {
         List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userToken);
 
         if(pinNoteList.isEmpty())
-            throw new FundooNoteException("PinNotes_Not_Found");
+            throw new FundooNoteException("PinNotes_Not_Found", HttpStatus.NOT_FOUND.value());
 
         return pinNoteList;
     }
@@ -170,7 +171,7 @@ public class NoteService implements INoteService {
         List<NoteDetails> archiveNoteList = noteRepository.getArchiveNoteList(userId);
 
         if(archiveNoteList.isEmpty())
-            throw new FundooNoteException("PinNotes_Not_Found");
+            throw new FundooNoteException("ArchiveNotes_Not_Found", HttpStatus.NOT_FOUND.value());
 
         return archiveNoteList;
     }
@@ -181,7 +182,7 @@ public class NoteService implements INoteService {
         List<NoteDetails> trashNoteList = noteRepository.getTrashNoteList(userId);
 
         if(trashNoteList.isEmpty())
-            throw new FundooNoteException("PinNotes_Not_Found");
+            throw new FundooNoteException("TrashNotes_Not_Found", HttpStatus.NOT_FOUND.value());
 
         return trashNoteList;
     }
@@ -194,10 +195,10 @@ public class NoteService implements INoteService {
         Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
 
         if(!noteId.isPresent())
-            throw new FundooNoteException("Note_Not_Found");
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
 
         if(noteDTO.isDeleted == null)
-            throw new FundooNoteException("Field_Must_Not_be_Null");
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
 
         if(noteDetails.isDeleted == true)
             noteRepository.deleteById(noteDetails.noteId);

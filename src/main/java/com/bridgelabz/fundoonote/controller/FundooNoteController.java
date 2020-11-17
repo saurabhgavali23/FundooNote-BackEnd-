@@ -39,7 +39,7 @@ public class FundooNoteController {
     public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestHeader("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            throw new FundooNoteException("Invalid_Data");
+            throw new FundooNoteException("Invalid_Data", HttpStatus.BAD_REQUEST.value());
         }
 
         String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
@@ -48,10 +48,10 @@ public class FundooNoteController {
         Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
 
         if(!validateToken)
-            throw new FundooNoteException("Token_Not_Valid");
+            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
 
         UserDetails userDetails = userRepository.findById(userTokens)
-                .orElseThrow(()-> new FundooNoteException("Invalid_user"));
+                .orElseThrow(()-> new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
 
         noteService.SaveNote(noteDTO, userDetails);
 
@@ -69,10 +69,10 @@ public class FundooNoteController {
         Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
 
         if(!validateToken)
-            throw new FundooNoteException("Token_Not_Valid");
+            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
 
         UserDetails userDetails = userRepository.findById(userTokens)
-                .orElseThrow(()-> new FundooNoteException("Invalid_User"));
+                .orElseThrow(()-> new FundooNoteException("Invalid_User", HttpStatus.BAD_REQUEST.value()));
 
         List noteList = noteService.getNoteList(userDetails);
 
@@ -140,7 +140,7 @@ public class FundooNoteController {
         Optional<UserDetails> byId = userRepository.findById(userId);
 
         if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found");
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List pinNote = noteService.getPinNotes(userId);
 
@@ -158,7 +158,7 @@ public class FundooNoteController {
         Optional<UserDetails> byId = userRepository.findById(userId);
 
         if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found");
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List archiveNotes = noteService.getArchiveNotes(userId);
 
@@ -176,7 +176,7 @@ public class FundooNoteController {
         Optional<UserDetails> byId = userRepository.findById(userId);
 
         if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found");
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List trashNotes = noteService.getTrashNotes(userId);
 

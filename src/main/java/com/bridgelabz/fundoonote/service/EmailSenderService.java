@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonote.service;
 
+import com.bridgelabz.fundoonote.exception.FundooUserException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
@@ -40,7 +42,7 @@ public class EmailSenderService {
                 javaMailSender.send(mailMessage);
                 
             } catch (Exception e) {
-                throw new FundooNoteException("INTERNAL_SERVER_ERROR");
+                throw new FundooUserException("INTERNAL_SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
 		});
 	}
