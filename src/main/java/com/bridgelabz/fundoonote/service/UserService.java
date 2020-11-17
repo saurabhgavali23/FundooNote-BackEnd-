@@ -1,7 +1,5 @@
 package com.bridgelabz.fundoonote.service;
 
-import com.bridgelabz.fundoonote.exception.DataNotFoundException;
-import com.bridgelabz.fundoonote.exception.FundooNoteException;
 import com.bridgelabz.fundoonote.exception.FundooUserException;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
