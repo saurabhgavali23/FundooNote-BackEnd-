@@ -28,4 +28,6 @@ public interface INoteService {
     String updateTitleAndDescription(NoteDTO noteDTO);
 
     String deleteNotePermanently(NoteDTO noteDTO);
+
+    String updateReminder(NoteDTO noteDTO);
 }

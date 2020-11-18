@@ -147,6 +147,27 @@ public class NoteService implements INoteService {
     }
 
     @Override
+    public String updateReminder(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
+
+        Optional<NoteDetails> noteId = noteRepository.findById(noteDetails.noteId);
+
+        if(!noteId.isPresent())
+            throw new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        if(noteDTO.reminder == null)
+            throw new FundooNoteException("Field_Must_Not_be_Null", HttpStatus.BAD_REQUEST.value());
+
+        int details = noteRepository.updateReminder(noteDetails.reminder, noteDetails.modifiedDate, noteDetails.noteId);
+
+        if(details == 0){
+            throw new FundooNoteException("Reminder_Note_Not_Update", HttpStatus.NOT_IMPLEMENTED.value());
+        }
+        return "Reminder Note Updated";
+    }
+
+    @Override
     public List getPinNotes(Long userToken) {
 
         List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userToken);
