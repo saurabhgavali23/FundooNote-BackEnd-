@@ -1,14 +1,18 @@
 package com.bridgelabz.fundoonote.module;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @NoArgsConstructor
@@ -29,16 +33,18 @@ public class NoteDetails implements Serializable {
     public String color;
     public String reminder;
 
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    @JsonIgnore
+    @Transient
+    LocalDateTime now = LocalDateTime.now();
 
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date modifiedDate = new Date();
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    public LocalDateTime modifiedDate = now;
 
     public NoteDetails(NoteDTO noteDTO){
-        this.createdDate = new Date();
+        this.createdDate = this.now;
         this.title = noteDTO.title;
         this.description = noteDTO.description;
         this.isPined = noteDTO.isPined;
@@ -46,9 +52,5 @@ public class NoteDetails implements Serializable {
         this.isDeleted = noteDTO.isDeleted;
         this.color = noteDTO.color;
         this.reminder = noteDTO.reminder;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 }

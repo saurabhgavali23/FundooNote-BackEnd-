@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonote.module;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +43,12 @@ public class UserDetails implements Serializable {
 	@JsonIgnore
 	public boolean isVerified = false;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date createdDate;
+	@JsonIgnore
+	@Transient
+	LocalDateTime now = LocalDateTime.now();
+
+	@CreationTimestamp
+	public LocalDateTime createdDate;
 
 	public void setTokenId(String tokenId) {
 		this.tokenId = tokenId;
@@ -73,7 +79,7 @@ public class UserDetails implements Serializable {
 	}
 
 	public UserDetails(UserDTO fundooDto) {
-		this.createdDate = new Date();
+		this.createdDate = now;
 		this.firstName = fundooDto.firstName;
 		this.lastName = fundooDto.lastName;
 		this.service = fundooDto.service;
