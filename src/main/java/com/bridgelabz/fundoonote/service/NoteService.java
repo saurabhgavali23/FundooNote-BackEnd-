@@ -5,6 +5,7 @@ import com.bridgelabz.fundoonote.exception.FundooNoteException;
 import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
+import com.bridgelabz.fundoonote.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,19 @@ public class NoteService implements INoteService {
     @Autowired
     NoteRepository noteRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public void SaveNote(NoteDTO noteDTO, UserDetails userDetails) {
 
-        NoteDetails noteDetails = new NoteDetails(noteDTO, userDetails);
+        NoteDetails noteDetails = new NoteDetails(noteDTO);
 
-        NoteDetails details = noteRepository.save(noteDetails);
+        NoteDetails saveNoteDetails = noteRepository.save(noteDetails);
+
+        userDetails.getNoteDetails().add(saveNoteDetails);
+
+        UserDetails details = userRepository.save(userDetails);
 
         if(details == null){
             throw new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());

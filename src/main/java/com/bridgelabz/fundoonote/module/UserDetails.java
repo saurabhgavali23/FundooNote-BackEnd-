@@ -14,7 +14,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @ToString
@@ -60,10 +60,13 @@ public class UserDetails implements Serializable {
 		this.password = password;
 	}
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY,
-	 cascade = CascadeType.ALL)
-	private Set<NoteDetails> noteDetails;
+	@OneToMany(orphanRemoval = true)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private List<NoteDetails> noteDetails;
+
+	public List<NoteDetails> getNoteDetails() {
+		return noteDetails;
+	}
 
 	public UserDetails() {
 	}

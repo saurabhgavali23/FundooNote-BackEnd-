@@ -37,25 +37,7 @@ public class NoteDetails implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     public Date modifiedDate = new Date();
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_Id", nullable = false)
-    private UserDetails userDetails;
-
-    public NoteDetails(NoteDTO noteDTO, UserDetails userDetails){
-        this.createdDate = new Date();
-        this.title = noteDTO.title;
-        this.description = noteDTO.description;
-        this.isPined = noteDTO.isPined;
-        this.isArchived = noteDTO.isArchived;
-        this.isDeleted = noteDTO.isDeleted;
-        this.color = noteDTO.color;
-        this.reminder = noteDTO.reminder;
-        this.userDetails = userDetails;
-    }
-
     public NoteDetails(NoteDTO noteDTO){
-        this.noteId = noteDTO.noteId;
         this.createdDate = new Date();
         this.title = noteDTO.title;
         this.description = noteDTO.description;
