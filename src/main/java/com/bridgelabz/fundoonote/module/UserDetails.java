@@ -60,6 +60,7 @@ public class UserDetails implements Serializable {
 		this.password = password;
 	}
 
+	@JsonIgnore
 	@OneToMany(orphanRemoval = true)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private List<NoteDetails> noteDetails;
