@@ -30,4 +30,6 @@ public interface INoteService {
     String deleteNotePermanently(NoteDTO noteDTO);
 
     String updateReminder(NoteDTO noteDTO);
+
+    List getReminderNotes(Long userId);
 }

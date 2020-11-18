@@ -195,6 +195,24 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/reminderNoteList")
+    public ResponseEntity<ResponseDTO> getReminderNotes(@RequestHeader("token") String userToken){
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        List reminderNotes = noteService.getReminderNotes(userId);
+
+        ResponseDTO responseDTO = new ResponseDTO(reminderNotes);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @DeleteMapping("/note")
     public ResponseEntity<ResponseDTO> deleteNotePermanently(@RequestBody NoteDTO noteDTO){
 

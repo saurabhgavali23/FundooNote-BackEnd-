@@ -201,6 +201,17 @@ public class NoteService implements INoteService {
     }
 
     @Override
+    public List getReminderNotes(Long userId) {
+
+        List<NoteDetails> reminderNoteList = noteRepository.getReminderNoteList(userId);
+
+        if(reminderNoteList.isEmpty())
+            throw new FundooNoteException("ReminderNotes_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        return reminderNoteList;
+    }
+
+    @Override
     public String deleteNotePermanently(NoteDTO noteDTO) {
 
         NoteDetails noteDetails = new NoteDetails(noteDTO);

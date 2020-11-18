@@ -52,4 +52,7 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
     @Modifying
     @Query(value = "UPDATE note_details u SET u.reminder =?1, u.modified_date =?2 WHERE u.note_id =?3", nativeQuery = true)
     int updateReminder(String reminder, Date modifiedDate, Long noteId);
+
+    @Query(value = "SELECT * FROM note_details u WHERE u.user_id =?1 AND u.reminder IS NOT NULL", nativeQuery = true)
+    List<NoteDetails> getReminderNoteList(Long userId);
 }
