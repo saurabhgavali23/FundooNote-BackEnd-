@@ -71,6 +71,15 @@ public class UserDetails implements Serializable {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private List<NoteDetails> noteDetails;
 
+	@JsonIgnore
+	@OneToMany(orphanRemoval = true)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private List<LabelDetails> labelDetails;
+
+	public List<LabelDetails> getLabelDetails() {
+		return labelDetails;
+	}
+
 	public List<NoteDetails> getNoteDetails() {
 		return noteDetails;
 	}

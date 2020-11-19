@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,6 +40,14 @@ public class NoteDetails implements Serializable {
 
     @UpdateTimestamp
     public LocalDateTime modifiedDate = now;
+
+    @ManyToMany
+    @JoinColumn(name = "note_id", referencedColumnName = "noteId")
+    private List<LabelDetails> labelDetails;
+
+    public List<LabelDetails> getLabelDetails() {
+        return labelDetails;
+    }
 
     public NoteDetails(NoteDTO noteDTO){
         this.createdDate = this.now;
