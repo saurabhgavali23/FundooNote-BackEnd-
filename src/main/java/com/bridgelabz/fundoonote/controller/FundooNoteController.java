@@ -247,4 +247,15 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @PostMapping("/updateLabel")
+    public ResponseEntity<ResponseDTO> updateLabel(@RequestHeader("token") String userToken,
+                                                    @RequestBody LabelDTO labelDTO){
+
+        String message = noteService.updateLabel(userToken, labelDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

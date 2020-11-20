@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class LabelDTO {
 
+    public Long labelId;
+
     @NotNull
     @Length(min = 1, max = 255, message = "label name at least 1 char")
     public String labelName;
