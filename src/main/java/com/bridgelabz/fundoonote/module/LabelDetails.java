@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -30,6 +31,11 @@ public class LabelDetails implements Serializable {
 
     @UpdateTimestamp
     public LocalDateTime modifiedDate = now;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            mappedBy = "labelDetails")
+    private List<NoteDetails> noteDetails;
 
     public LabelDetails(LabelDTO labelDTO) {
         this.createDate = now;
