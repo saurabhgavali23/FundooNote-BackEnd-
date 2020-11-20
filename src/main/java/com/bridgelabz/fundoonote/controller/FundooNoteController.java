@@ -258,4 +258,14 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/labelList")
+    public ResponseEntity<ResponseDTO> getLabelDetails(@RequestHeader("token") String userToken){
+
+        List labelDetails = noteService.getLabelDetails(userToken);
+
+        ResponseDTO responseDTO = new ResponseDTO(labelDetails);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

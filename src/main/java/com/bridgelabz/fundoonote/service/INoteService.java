@@ -40,4 +40,6 @@ public interface INoteService {
     String addLabelInNote(String userToken, Long labelId, Long noteId);
 
     String updateLabel(String userToken, LabelDTO labelDTO);
+
+    List getLabelDetails(String userToken);
 }

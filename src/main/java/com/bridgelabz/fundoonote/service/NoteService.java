@@ -314,4 +314,20 @@ public class NoteService implements INoteService {
         }
         return "Label_Updated_Successfully";
     }
+
+    @Override
+    public List getLabelDetails(String userToken) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        List<LabelDetails> labelList = labelRepository.getLabelList(userId);
+
+        if(labelList.isEmpty())
+            throw new FundooNoteException("Label_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        return labelList;
+    }
 }
