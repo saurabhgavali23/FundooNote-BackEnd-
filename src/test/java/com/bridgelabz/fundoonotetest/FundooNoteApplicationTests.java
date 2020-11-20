@@ -3,7 +3,7 @@ package com.bridgelabz.fundoonotetest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = {com.bridgelabz.fundoonote.configuration.UserSecurity.class})
 class FundooNoteApplicationTests {
 
 	@Test
