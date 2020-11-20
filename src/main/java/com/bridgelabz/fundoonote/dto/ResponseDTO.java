@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonote.dto;
 
+import com.bridgelabz.fundoonote.module.LabelDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class ResponseDTO {
 	public int otp;
 	public UserDetails userDetails;
 	public List data;
+	public LabelDetails labelDetails;
 
 	public ResponseDTO(String message, UserDetails userDetails) {
 		this.message = message;
@@ -33,5 +35,9 @@ public class ResponseDTO {
 
 	public ResponseDTO(List allUserRecords) {
 		this.data = allUserRecords;
+	}
+
+	public ResponseDTO(LabelDetails labelDetails) {
+		this.labelDetails = labelDetails;
 	}
 }

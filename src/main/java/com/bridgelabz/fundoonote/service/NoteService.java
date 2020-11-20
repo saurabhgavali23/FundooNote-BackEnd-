@@ -1,11 +1,16 @@
 package com.bridgelabz.fundoonote.service;
 
+import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.exception.FundooUserException;
+import com.bridgelabz.fundoonote.module.LabelDetails;
 import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
+import com.bridgelabz.fundoonote.repository.LabelRepository;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
+import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +26,12 @@ public class NoteService implements INoteService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JwtToken jwtToken;
+
+    @Autowired
+    LabelRepository labelRepository;
 
     @Override
     public void SaveNote(NoteDTO noteDTO, UserDetails userDetails) {
@@ -238,5 +249,27 @@ public class NoteService implements INoteService {
             return "Note_Updated";
 
         return "Note_Deleted_Successfully";
+    }
+
+    @Override
+    public LabelDetails addLabel(String userToken, LabelDTO labelDTO) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        LabelDetails labelDetails = new LabelDetails(labelDTO);
+
+        LabelDetails saveLabelDetails = labelRepository.save(labelDetails);
+
+        userDetails.getLabelDetails().add(saveLabelDetails);
+        userRepository.save(userDetails);
+
+        if(saveLabelDetails == null){
+            throw new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());
+        }
+
+        return saveLabelDetails;
     }
 }

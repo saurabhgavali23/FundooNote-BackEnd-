@@ -1,7 +1,6 @@
 package com.bridgelabz.fundoonote.module;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
 
 @NoArgsConstructor
 @Entity
@@ -40,14 +38,6 @@ public class NoteDetails implements Serializable {
 
     @UpdateTimestamp
     public LocalDateTime modifiedDate = now;
-
-    @ManyToMany
-    @JoinColumn(name = "note_id", referencedColumnName = "noteId")
-    private List<LabelDetails> labelDetails;
-
-    public List<LabelDetails> getLabelDetails() {
-        return labelDetails;
-    }
 
     public NoteDetails(NoteDTO noteDTO){
         this.createdDate = this.now;

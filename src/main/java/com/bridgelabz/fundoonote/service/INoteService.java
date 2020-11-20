@@ -1,6 +1,8 @@
 package com.bridgelabz.fundoonote.service;
 
+import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
+import com.bridgelabz.fundoonote.module.LabelDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 
 import java.util.List;
@@ -32,4 +34,6 @@ public interface INoteService {
     String updateReminder(NoteDTO noteDTO);
 
     List getReminderNotes(Long userId);
+
+    LabelDetails addLabel(String userToken, LabelDTO labelName);
 }

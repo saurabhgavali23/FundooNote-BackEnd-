@@ -1,8 +1,12 @@
 package com.bridgelabz.fundoonote.controller;
 
+import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.exception.FundooUserException;
+import com.bridgelabz.fundoonote.module.LabelDetails;
+import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
@@ -221,5 +225,15 @@ public class FundooNoteController {
         ResponseDTO responseDTO = new ResponseDTO(message);
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @PostMapping("/label")
+    public ResponseEntity<ResponseDTO> addLabels(@RequestHeader("token") String userToken, @RequestBody LabelDTO labelDTO){
+
+        LabelDetails responseLabelDetails = noteService.addLabel(userToken, labelDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(responseLabelDetails);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

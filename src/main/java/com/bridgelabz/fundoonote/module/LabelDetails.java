@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonote.module;
 
+import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
+@Table(name = "labelDetails")
 public class LabelDetails implements Serializable {
 
     @Id
@@ -29,9 +31,8 @@ public class LabelDetails implements Serializable {
     @UpdateTimestamp
     public LocalDateTime modifiedDate = now;
 
-    public LabelDetails(Long id, String labelName) {
+    public LabelDetails(LabelDTO labelDTO) {
         this.createDate = now;
-        this.id = id;
-        this.labelName = labelName;
+        this.labelName = labelDTO.labelName;
     }
 }
