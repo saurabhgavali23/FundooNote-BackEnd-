@@ -43,6 +43,10 @@ public class NoteDetails implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<LabelDetails> labelDetails;
 
+    public List<LabelDetails> getLabelDetails() {
+        return labelDetails;
+    }
+
     public NoteDetails(NoteDTO noteDTO){
         this.createdDate = this.now;
         this.title = noteDTO.title;

@@ -272,4 +272,25 @@ public class NoteService implements INoteService {
 
         return saveLabelDetails;
     }
+
+    @Override
+    public String addLabelInNote(String userToken, Long labelId, Long noteId) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        NoteDetails noteDetails = noteRepository.findById(noteId)
+                .orElseThrow(() -> new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        LabelDetails labelDetails = labelRepository.findById(labelId)
+                .orElseThrow(() -> new FundooNoteException("Label_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        noteDetails.getLabelDetails().add(labelDetails);
+
+        noteRepository.save(noteDetails);
+
+        return "Note_Label_Saved";
+    }
 }
