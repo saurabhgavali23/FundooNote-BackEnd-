@@ -103,4 +103,19 @@ public class UserServiceTest {
             Assert.assertEquals(400, u.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenEmail_whenEmailIsNotVerified_thenThrowInvalidAccountException() {
+
+        try {
+            when(userServiceMock.loginUser("gavalisaurabh10@gmail.com", "Abcd@"))
+                    .thenThrow(new FundooUserException("Invalid_Account", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@");
+
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
+    }
 }
