@@ -121,12 +121,26 @@ public class UserServiceTest {
     }
 
     @Test
-    public void givenToken_whenTokenIsValid_shouldReturnValidMessage(){
+    public void givenToken_whenTokenIsValid_shouldReturnValidMessage() {
 
         when(userServiceMock.verifyAccount(anyString())).thenReturn("User Verified");
 
         String actualMessage = userServiceMock.verifyAccount(anyString());
 
         Assert.assertEquals("User Verified", actualMessage);
+    }
+
+    @Test
+    public void givenToken_whenTokenIsNotValid_thenThrowInvalidLinkException() {
+
+        try {
+            when(userServiceMock.verifyAccount(anyString()))
+                    .thenThrow(new FundooUserException("Invalid_link", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.verifyAccount(anyString());
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
     }
 }
