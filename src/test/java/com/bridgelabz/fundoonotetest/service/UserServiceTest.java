@@ -16,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -108,7 +109,7 @@ public class UserServiceTest {
     public void givenEmail_whenEmailIsNotVerified_thenThrowInvalidAccountException() {
 
         try {
-            when(userServiceMock.loginUser("gavalisaurabh10@gmail.com", "Abcd@"))
+            Mockito.lenient().when(userServiceMock.loginUser("gavalisaurabh10@gmail.com", "Abcd@"))
                     .thenThrow(new FundooUserException("Invalid_Account", HttpStatus.BAD_REQUEST.value()));
 
             userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@");
@@ -117,5 +118,15 @@ public class UserServiceTest {
 
             Assert.assertEquals(400, u.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenToken_whenTokenIsValid_shouldReturnValidMessage(){
+
+        when(userServiceMock.verifyAccount(anyString())).thenReturn("User Verified");
+
+        String actualMessage = userServiceMock.verifyAccount(anyString());
+
+        Assert.assertEquals("User Verified", actualMessage);
     }
 }
