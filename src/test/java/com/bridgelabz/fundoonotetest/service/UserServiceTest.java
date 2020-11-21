@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -24,6 +25,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -170,5 +173,18 @@ public class UserServiceTest {
 
             Assert.assertEquals(400, u.getHttpStatus());
         }
+    }
+
+    @Test
+    public void whenUsersAreAvailable_shouldReturnUserList(){
+
+        List<UserDetails> userDetailsList = new ArrayList<>();
+
+        when(userServiceMock.getAllUserRecords()).thenReturn(userDetailsList);
+
+        List allUserRecords = userServiceMock.getAllUserRecords();
+
+        Assert.assertEquals(userDetailsList, allUserRecords);
+
     }
 }
