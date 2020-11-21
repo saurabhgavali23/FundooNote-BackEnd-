@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Component
 public class UserDTO {
@@ -25,6 +25,14 @@ public class UserDTO {
     public String password;
     @NotNull
     public String service;
+
+    public UserDTO(@Length(min = 3, max = 20, message = "Invalid FirstName") String firstName, @Length(min = 3, max = 20, message = "Invalid LastName") String lastName, @NotNull @Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$") String email, @NotNull @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$") String password, @NotNull String service) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.service = service;
+    }
 }
 
 
