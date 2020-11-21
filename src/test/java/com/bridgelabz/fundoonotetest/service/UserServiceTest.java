@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void givenUserDetails_whenUserStore_shouldReturnStoreUserDetails(){
+    public void givenUserDetails_whenUserStore_shouldReturnStoreUserDetails() {
 
         when(userServiceMock.addUser(userDTO)).thenReturn("User_Added_Successfully");
 
@@ -48,27 +50,41 @@ public class UserServiceTest {
     }
 
     @Test
-    public void givenSameUserDetails_whenUserNotStore_thenThrowException(){
-        try{
+    public void givenSameUserDetails_whenUserNotStore_thenThrowException() {
+        try {
             when(userServiceMock.addUser(userDTO)).thenThrow(new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value()));
 
             userServiceMock.addUser(userDTO);
 
-        }catch (FundooUserException u){
+        } catch (FundooUserException u) {
 
             Assert.assertEquals(409, u.getHttpStatus());
         }
     }
 
     @Test
-    public void givenUserNameAndPassword_whenUserValid_shouldReturnUserDetails(){
+    public void givenUserNameAndPassword_whenUserValid_shouldReturnUserDetails() {
 
         UserDetails userDetails = new UserDetails(userDTO);
 
-        when(userServiceMock.loginUser("gavalisaurabh02@gmail.com","Abcd@123")).thenReturn(userDetails);
+        when(userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@123")).thenReturn(userDetails);
 
         UserDetails userDetails1 = userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@123");
 
-        Assert.assertEquals(userDetails,userDetails1);
+        Assert.assertEquals(userDetails, userDetails1);
+    }
+
+    @Test
+    public void givenInvalidEmail_whenUserNotFound_thenThrowInvalidEmailException() {
+
+        try {
+            when(userServiceMock.loginUser("gavalisaurabh@gmail.com", "Abcd@123")).thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.loginUser("gavalisaurabh@gmail.com", "Abcd@123");
+
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
     }
 }
