@@ -87,4 +87,19 @@ public class UserServiceTest {
             Assert.assertEquals(400, u.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenInvalidPassword_whenUserPasswordNotValid_thenThrowInvalidPasswordException() {
+
+        try {
+            when(userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@"))
+                    .thenThrow(new FundooUserException("Invalid_Password", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@");
+
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
+    }
 }
