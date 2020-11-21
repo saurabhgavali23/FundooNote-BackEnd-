@@ -145,11 +145,25 @@ public class UserServiceTest {
     }
 
     @Test
-    public void givenToken_whenUserTokenEmailIsNotValid_thenThrowInvalidLinkException() {
+    public void givenToken_whenUserTokenEmailIsNotValid_thenThrowInvalidEmailException() {
 
         try {
             when(userServiceMock.verifyAccount(anyString()))
                     .thenThrow(new FundooUserException("Invalid_Email", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.verifyAccount(anyString());
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
+    }
+
+    @Test
+    public void givenToken_whenUserTokenExpire_thenThrowLinkExpireException() {
+
+        try {
+            when(userServiceMock.verifyAccount(anyString()))
+                    .thenThrow(new FundooUserException("Link_Expire", HttpStatus.BAD_REQUEST.value()));
 
             userServiceMock.verifyAccount(anyString());
         } catch (FundooUserException u) {
