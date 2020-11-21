@@ -21,6 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -37,8 +39,11 @@ public class UserServiceTest {
 
     @Test
     public void givenUserDetails_whenUserStore_shouldReturnStoreUserDetails(){
+
         when(userServiceMock.addUser(userDTO)).thenReturn("User_Added_Successfully");
+
         String message = userServiceMock.addUser(userDTO);
+
         Assert.assertEquals(message, "User_Added_Successfully");
     }
 
@@ -46,9 +51,24 @@ public class UserServiceTest {
     public void givenSameUserDetails_whenUserNotStore_thenThrowException(){
         try{
             when(userServiceMock.addUser(userDTO)).thenThrow(new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value()));
+
             userServiceMock.addUser(userDTO);
+
         }catch (FundooUserException u){
+
             Assert.assertEquals(409, u.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenUserNameAndPassword_whenUserValid_shouldReturnUserDetails(){
+
+        UserDetails userDetails = new UserDetails(userDTO);
+
+        when(userServiceMock.loginUser("gavalisaurabh02@gmail.com","Abcd@123")).thenReturn(userDetails);
+
+        UserDetails userDetails1 = userServiceMock.loginUser("gavalisaurabh02@gmail.com", "Abcd@123");
+
+        Assert.assertEquals(userDetails,userDetails1);
     }
 }
