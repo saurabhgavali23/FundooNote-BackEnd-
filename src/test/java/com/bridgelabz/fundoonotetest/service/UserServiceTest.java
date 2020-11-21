@@ -143,4 +143,18 @@ public class UserServiceTest {
             Assert.assertEquals(400, u.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenToken_whenUserTokenEmailIsNotValid_thenThrowInvalidLinkException() {
+
+        try {
+            when(userServiceMock.verifyAccount(anyString()))
+                    .thenThrow(new FundooUserException("Invalid_Email", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.verifyAccount(anyString());
+        } catch (FundooUserException u) {
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
+    }
 }
