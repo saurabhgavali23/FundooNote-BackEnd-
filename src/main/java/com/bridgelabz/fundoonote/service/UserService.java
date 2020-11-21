@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.dto.UserDTO;
 import com.bridgelabz.fundoonote.module.UserDetails;
-import com.bridgelabz.fundoonote.repository.ConfirmationTokenRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -24,9 +24,6 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private ConfirmationTokenRepository confirmationTokenRepository;
 
 	@Autowired
 	private EmailSenderService emailSenderService;
@@ -39,6 +36,12 @@ public class UserService implements IUserService {
 
 	@Override
 	public String addUser(UserDTO userDTO) {
+
+		Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
+
+		if (byEmailId.isPresent()) {
+			throw new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value());
+		}
 		
 		UserDetails userDetails = new UserDetails(userDTO);
 		UserDetails details = userRepository.save(userDetails);
@@ -54,7 +57,10 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void forgotPassword(UserDetails userDetails) {
+	public void forgotPassword(String email) {
+
+		UserDetails userDetails = userRepository.findByEmail(email)
+				.orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 		
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 

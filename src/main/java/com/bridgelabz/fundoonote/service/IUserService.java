@@ -9,7 +9,7 @@ public interface IUserService {
 
     String addUser(UserDTO fundooDTO);
 
-    void forgotPassword(UserDetails email);
+    void forgotPassword(String email);
 
     UserDetails loginUser(String email, String password);
 

@@ -33,21 +33,13 @@ public class FundooUserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
-
-
     @PostMapping("/user")
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) throws FundooUserException {
 
         if (result.hasErrors()) {
             throw new FundooUserException("invalid data", HttpStatus.BAD_REQUEST.value());
         }
-        Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
-        if (byEmailId.isPresent()) {
-            throw new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value());
-        }
         String message = userService.addUser(userDTO);
         ResponseDTO userData = new ResponseDTO(message);
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
@@ -77,11 +69,7 @@ public class FundooUserController {
     @GetMapping("/forgot-password")
     public ResponseEntity<ResponseDTO> forgetPassword(@RequestHeader("email") String email) {
 
-
-        UserDetails findByEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
-
-        userService.forgotPassword(findByEmail);
+        userService.forgotPassword(email);
 
         ResponseDTO userData = new ResponseDTO("Password Reset Link Sent to Email");
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
