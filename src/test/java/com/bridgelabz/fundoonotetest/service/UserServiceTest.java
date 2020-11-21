@@ -75,10 +75,11 @@ public class UserServiceTest {
     }
 
     @Test
-    public void givenInvalidEmail_whenUserNotFound_thenThrowInvalidEmailException() {
+    public void givenInvalidEmail_whenUserEmailNotValid_thenThrowInvalidEmailException() {
 
         try {
-            when(userServiceMock.loginUser("gavalisaurabh@gmail.com", "Abcd@123")).thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
+            when(userServiceMock.loginUser("gavalisaurabh@gmail.com", "Abcd@123"))
+                    .thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
             userServiceMock.loginUser("gavalisaurabh@gmail.com", "Abcd@123");
 
