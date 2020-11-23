@@ -169,4 +169,18 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenArchiveNoteDetails_whenArchiveNoteIdNotFound_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateArchived(any()))
+                    .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.updateArchived(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
