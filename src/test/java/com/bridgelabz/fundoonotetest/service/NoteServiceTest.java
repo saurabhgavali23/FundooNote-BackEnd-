@@ -269,4 +269,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals("TitleAndDescriptionNote Updated", actualMessage);
     }
+
+    @Test
+    public void givenNoteDetails_whenTitleAndDescriptionNoteNotUpdate_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateTitleAndDescription(any()))
+                    .thenThrow(new FundooNoteException("TitleAndDescriptionNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateTitleAndDescription(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
