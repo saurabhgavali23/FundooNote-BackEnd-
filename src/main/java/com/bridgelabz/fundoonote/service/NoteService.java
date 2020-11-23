@@ -34,7 +34,7 @@ public class NoteService implements INoteService {
     LabelRepository labelRepository;
 
     @Override
-    public String SaveNote(NoteDTO noteDTO, String userToken) {
+    public String saveNote(NoteDTO noteDTO, String userToken) {
 
         String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
         long userTokens = Long.parseLong(userIdFromToken);

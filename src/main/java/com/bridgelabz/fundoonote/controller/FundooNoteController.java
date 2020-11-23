@@ -4,10 +4,7 @@ import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
-import com.bridgelabz.fundoonote.exception.FundooUserException;
 import com.bridgelabz.fundoonote.module.LabelDetails;
-import com.bridgelabz.fundoonote.module.NoteDetails;
-import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.service.NoteService;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/fundoonote/note")
@@ -39,14 +35,14 @@ public class FundooNoteController {
     @Autowired
     JwtToken jwtToken;
 
-    @PostMapping("/save_note")
-    public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestHeader("token") String userToken, @RequestBody NoteDTO noteDTO, BindingResult result) {
+    @PostMapping("/saveNote")
+    public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestBody NoteDTO noteDTO, @RequestHeader("token") String userToken, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new FundooNoteException("Invalid_Data", HttpStatus.BAD_REQUEST.value());
         }
 
-        String responseMessage = noteService.SaveNote(noteDTO, userToken);
+        String responseMessage = noteService.saveNote(noteDTO, userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(responseMessage);
 

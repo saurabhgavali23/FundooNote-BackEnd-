@@ -30,9 +30,9 @@ public class NoteServiceTest {
     @Test
     public void givenNoteDetails_whenNoteSave_shouldReturnSuccessMessage() {
 
-        when(noteServiceMock.SaveNote(any(), anyString())).thenReturn("Note_Added_Successfully");
+        when(noteServiceMock.saveNote(any(), anyString())).thenReturn("Note_Added_Successfully");
 
-        String message = noteServiceMock.SaveNote(any(), anyString());
+        String message = noteServiceMock.saveNote(any(), anyString());
 
         Assert.assertEquals("Note_Added_Successfully", message);
     }
@@ -41,10 +41,10 @@ public class NoteServiceTest {
     public void givenNoteDetails_whenNoteNotSave_thenThrowException() {
 
         try {
-            when(noteServiceMock.SaveNote(any(), anyString()))
+            when(noteServiceMock.saveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value()));
 
-            noteServiceMock.SaveNote(any(), anyString());
+            noteServiceMock.saveNote(any(), anyString());
 
         } catch (FundooNoteException n) {
 
@@ -56,10 +56,10 @@ public class NoteServiceTest {
     public void givenNoteDetails_whenUserTokenNotValid_thenThrowException() {
 
         try {
-            when(noteServiceMock.SaveNote(any(), anyString()))
+            when(noteServiceMock.saveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value()));
 
-            noteServiceMock.SaveNote(any(), anyString());
+            noteServiceMock.saveNote(any(), anyString());
 
         } catch (FundooNoteException n) {
 
@@ -71,10 +71,10 @@ public class NoteServiceTest {
     public void givenNoteDetails_whenUserIdNotValid_thenThrowException() {
 
         try {
-            when(noteServiceMock.SaveNote(any(), anyString()))
+            when(noteServiceMock.saveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
 
-            noteServiceMock.SaveNote(any(), anyString());
+            noteServiceMock.saveNote(any(), anyString());
 
         } catch (FundooNoteException n) {
 
