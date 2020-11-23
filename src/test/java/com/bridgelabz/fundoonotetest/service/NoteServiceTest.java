@@ -283,4 +283,18 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenNoteDetails_whenTitleAndDescriptionNoteIdNotFound_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateTitleAndDescription(any()))
+                    .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.updateTitleAndDescription(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
