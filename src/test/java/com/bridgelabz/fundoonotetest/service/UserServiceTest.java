@@ -11,8 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -202,7 +201,8 @@ public class UserServiceTest {
     public void givenUserEmail_whenEmailIsNotValid_thenThrowEmailException(){
 
         try {
-            when(userServiceMock.forgotPassword("gavalisaurabh@gmail.com")).thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
+            when(userServiceMock.forgotPassword("gavalisaurabh@gmail.com"))
+                    .thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
             userServiceMock.forgotPassword("gavalisaurabh@gmail.com");
 
@@ -210,5 +210,15 @@ public class UserServiceTest {
 
             Assert.assertEquals(400, u.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenUserDetails_whenPasswordChange_shouldReturnTrue(){
+
+        when(userServiceMock.changePassword(any(),anyString())).thenReturn(true);
+
+        Boolean isPasswordChange = userServiceMock.changePassword(any(), anyString());
+
+        Assert.assertEquals(true, isPasswordChange);
     }
 }
