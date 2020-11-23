@@ -221,4 +221,24 @@ public class UserServiceTest {
 
         Assert.assertEquals(true, isPasswordChange);
     }
+
+    @Test
+    public void givenUserDetails_whenPasswordNotChange_shouldReturnFalse(){
+
+        when(userServiceMock.changePassword(any(),anyString())).thenReturn(false);
+
+        Boolean isPasswordChange = userServiceMock.changePassword(any(), anyString());
+
+        Assert.assertEquals(false, isPasswordChange);
+    }
+
+    @Test
+    public void givenUserToken_whenPasswordConfirm_shouldReturnTrue(){
+
+        when(userServiceMock.confirmPassword(anyString())).thenReturn(true);
+
+        Boolean isPasswordConfirm = userServiceMock.confirmPassword(anyString());
+
+        Assert.assertEquals(true, isPasswordConfirm);
+    }
 }
