@@ -109,12 +109,26 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void givenPinNoteDetails_whenPinNotUpdate_shouldReturnSuccessMessage() {
+    public void givenPinNoteDetails_whenPinNoteUpdate_shouldReturnSuccessMessage() {
 
         when(noteServiceMock.updatePin(any())).thenReturn("PinNote Updated");
 
         String actualMessage = noteServiceMock.updatePin(any());
 
         Assert.assertEquals("PinNote Updated", actualMessage);
+    }
+
+    @Test
+    public void givenPinNoteDetails_whenPinNoteNotUpdate_theThrowException() {
+
+        try{
+            when(noteServiceMock.updatePin(any()))
+                    .thenThrow(new FundooNoteException("PinNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updatePin(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
     }
 }
