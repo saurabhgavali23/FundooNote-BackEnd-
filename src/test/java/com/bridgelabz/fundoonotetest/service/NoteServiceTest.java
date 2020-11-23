@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotetest.service;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.service.NoteService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,8 +12,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -77,5 +80,17 @@ public class NoteServiceTest {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenUserToken_whenUserValid_shouldReturnNoteList(){
+
+        List<NoteDetails> noteDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getNoteList(anyString())).thenReturn(noteDetailsList);
+
+        List noteList = noteServiceMock.getNoteList(anyString());
+
+        Assert.assertEquals(noteDetailsList, noteList);
     }
 }
