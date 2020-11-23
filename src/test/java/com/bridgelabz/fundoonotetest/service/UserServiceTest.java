@@ -187,4 +187,15 @@ public class UserServiceTest {
         Assert.assertEquals(userDetailsList, allUserRecords);
 
     }
+
+    @Test
+    public void giveUserEmail_whenUserIsValid_shouldReturnEmailSentMessage(){
+
+        when(userServiceMock.forgotPassword("gavalisaurabh02@gmail.com")).thenReturn("Password Reset Link Sent to Email");
+
+        String actualMessage = userServiceMock.forgotPassword("gavalisaurabh02@gmail.com");
+
+        Assert.assertEquals("Password Reset Link Sent to Email", actualMessage);
+
+    }
 }
