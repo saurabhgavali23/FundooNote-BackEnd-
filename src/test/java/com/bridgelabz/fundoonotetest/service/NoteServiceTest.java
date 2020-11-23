@@ -231,4 +231,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals("ColorNote Updated", actualMessage);
     }
+
+    @Test
+    public void givenColorNoteDetails_whenColorNoteNotUpdate_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateColor(any()))
+                    .thenThrow(new FundooNoteException("ColorNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateColor(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
