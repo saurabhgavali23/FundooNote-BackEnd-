@@ -46,20 +46,9 @@ public class FundooNoteController {
             throw new FundooNoteException("Invalid_Data", HttpStatus.BAD_REQUEST.value());
         }
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userTokens = Long.parseLong(userIdFromToken);
+        String responseMessage = noteService.SaveNote(noteDTO, userToken);
 
-        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
-
-        if(!validateToken)
-            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
-
-        UserDetails userDetails = userRepository.findById(userTokens)
-                .orElseThrow(()-> new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
-
-        noteService.SaveNote(noteDTO, userDetails);
-
-        ResponseDTO responseDTO = new ResponseDTO("Note_Added_Successfully");
+        ResponseDTO responseDTO = new ResponseDTO(responseMessage);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

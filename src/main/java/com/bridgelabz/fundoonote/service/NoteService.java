@@ -34,7 +34,18 @@ public class NoteService implements INoteService {
     LabelRepository labelRepository;
 
     @Override
-    public void SaveNote(NoteDTO noteDTO, UserDetails userDetails) {
+    public String SaveNote(NoteDTO noteDTO, String userToken) {
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userTokens = Long.parseLong(userIdFromToken);
+
+        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
+
+        if(!validateToken)
+            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
+
+        UserDetails userDetails = userRepository.findById(userTokens)
+                .orElseThrow(()-> new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
 
         NoteDetails noteDetails = new NoteDetails(noteDTO);
 
@@ -47,6 +58,8 @@ public class NoteService implements INoteService {
         if(details == null){
             throw new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());
         }
+
+        return "Note_Added_Successfully";
     }
 
     @Override

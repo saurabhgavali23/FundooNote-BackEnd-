@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface INoteService {
 
-    public void SaveNote(NoteDTO noteDTO, UserDetails userDetails);
+    public String SaveNote(NoteDTO noteDTO, String userToken);
 
     public List getNoteList(UserDetails userDetails);
 
