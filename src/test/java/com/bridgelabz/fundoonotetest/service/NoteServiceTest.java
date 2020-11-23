@@ -221,4 +221,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenColorNoteDetails_whenColorNoteUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updateColor(any())).thenReturn("ColorNote Updated");
+
+        String actualMessage = noteServiceMock.updateColor(any());
+
+        Assert.assertEquals("ColorNote Updated", actualMessage);
+    }
 }
