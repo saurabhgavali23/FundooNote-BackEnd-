@@ -38,13 +38,29 @@ public class NoteServiceTest {
     public void givenNoteDetails_whenNoteNotSave_thenThrowException(){
 
         try{
-            when(noteServiceMock.SaveNote(any(),anyString())).thenThrow(new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value()));
+            when(noteServiceMock.SaveNote(any(),anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.SaveNote(any(), anyString());
 
         }catch (FundooNoteException n){
 
             Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
+
+    @Test
+    public void givenNoteDetails_whenUserTokenNotValid_thenThrowException(){
+
+        try{
+            when(noteServiceMock.SaveNote(any(),anyString()))
+                    .thenThrow(new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value()));
+
+            noteServiceMock.SaveNote(any(), anyString());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(400, n.getHttpStatus());
         }
     }
 }
