@@ -145,4 +145,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenArchiveNoteDetails_whenArchiveNoteUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updateArchived(any())).thenReturn("ArchiveNote Updated");
+
+        String actualMessage = noteServiceMock.updateArchived(any());
+
+        Assert.assertEquals("ArchiveNote Updated", actualMessage);
+    }
 }
