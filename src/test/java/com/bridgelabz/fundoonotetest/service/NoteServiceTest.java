@@ -245,4 +245,18 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenColorNoteDetails_whenColorNoteIdNotFound_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateColor(any()))
+                    .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.updateColor(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
