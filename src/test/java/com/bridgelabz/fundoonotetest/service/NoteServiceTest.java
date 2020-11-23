@@ -107,4 +107,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenPinNoteDetails_whenPinNotUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updatePin(any())).thenReturn("PinNote Updated");
+
+        String actualMessage = noteServiceMock.updatePin(any());
+
+        Assert.assertEquals("PinNote Updated", actualMessage);
+    }
 }
