@@ -121,12 +121,12 @@ public class NoteServiceTest {
     @Test
     public void givenPinNoteDetails_whenPinNoteNotUpdate_theThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updatePin(any()))
                     .thenThrow(new FundooNoteException("PinNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updatePin(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
@@ -135,12 +135,12 @@ public class NoteServiceTest {
     @Test
     public void givenPinNoteDetails_whenPinNoteIdNotFound_theThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updatePin(any()))
                     .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.updatePin(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
@@ -159,12 +159,12 @@ public class NoteServiceTest {
     @Test
     public void givenArchiveNoteDetails_whenArchiveNoteNotUpdate_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateArchived(any()))
                     .thenThrow(new FundooNoteException("ArchiveNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updateArchived(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
@@ -173,12 +173,12 @@ public class NoteServiceTest {
     @Test
     public void givenArchiveNoteDetails_whenArchiveNoteIdNotFound_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateArchived(any()))
                     .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.updateArchived(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
@@ -197,12 +197,12 @@ public class NoteServiceTest {
     @Test
     public void givenTrashNoteDetails_whenTrashNoteNotUpdate_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateTrash(any()))
                     .thenThrow(new FundooNoteException("TrashNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updateTrash(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
@@ -211,12 +211,12 @@ public class NoteServiceTest {
     @Test
     public void givenTrashNoteDetails_whenTrashNoteIdNotFound_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateTrash(any()))
                     .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.updateTrash(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
@@ -235,12 +235,12 @@ public class NoteServiceTest {
     @Test
     public void givenColorNoteDetails_whenColorNoteNotUpdate_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateColor(any()))
                     .thenThrow(new FundooNoteException("ColorNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updateColor(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
@@ -249,12 +249,12 @@ public class NoteServiceTest {
     @Test
     public void givenColorNoteDetails_whenColorNoteIdNotFound_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateColor(any()))
                     .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.updateColor(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
@@ -273,12 +273,12 @@ public class NoteServiceTest {
     @Test
     public void givenNoteDetails_whenTitleAndDescriptionNoteNotUpdate_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateTitleAndDescription(any()))
                     .thenThrow(new FundooNoteException("TitleAndDescriptionNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updateTitleAndDescription(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
@@ -287,12 +287,12 @@ public class NoteServiceTest {
     @Test
     public void givenNoteDetails_whenTitleAndDescriptionNoteIdNotFound_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateTitleAndDescription(any()))
                     .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.updateTitleAndDescription(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
@@ -311,14 +311,26 @@ public class NoteServiceTest {
     @Test
     public void givenReminderNoteDetails_whenReminderNoteUpdate_thenThrowException() {
 
-        try{
+        try {
             when(noteServiceMock.updateReminder(any()))
                     .thenThrow(new FundooNoteException("ReminderNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.updateReminder(any());
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenUserToken_whenPinNoteFound_shouldReturnPinNoteList() {
+
+        List<NoteDetails> noteDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getPinNotes(anyString())).thenReturn(noteDetailsList);
+
+        List pinNotesLis = noteServiceMock.getPinNotes(anyString());
+
+        Assert.assertEquals(noteDetailsList, pinNotesLis);
     }
 }
