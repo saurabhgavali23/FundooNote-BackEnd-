@@ -259,4 +259,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenNoteDetails_whenTitleAndDescriptionUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updateTitleAndDescription(any())).thenReturn("TitleAndDescriptionNote Updated");
+
+        String actualMessage = noteServiceMock.updateTitleAndDescription(any());
+
+        Assert.assertEquals("TitleAndDescriptionNote Updated", actualMessage);
+    }
 }
