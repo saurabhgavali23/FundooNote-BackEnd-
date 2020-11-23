@@ -57,7 +57,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void forgotPassword(String email) {
+	public String forgotPassword(String email) {
 
 		UserDetails userDetails = userRepository.findByEmail(email)
 				.orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
@@ -68,7 +68,9 @@ public class UserService implements IUserService {
 		mailMessage.setSubject("Complete Password Reset");
 		mailMessage.setText("To complete the password reset process, please click here: "
 				+url+"/fundoonote/confirm-reset-password?token="+userDetails.id);
-		emailSenderService.sendEmail(mailMessage);	
+		emailSenderService.sendEmail(mailMessage);
+
+		return "Password Reset Link Sent to Email";
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void confirmPassword(String userToken) {
+	public Boolean confirmPassword(String userToken) {
 
 		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
@@ -121,11 +123,16 @@ public class UserService implements IUserService {
 			throw new FundooUserException("Invalid_link", HttpStatus.BAD_REQUEST.value());
 		}
 		user.setVerified(true);
-		userRepository.save(user);
+		UserDetails userDetails = userRepository.save(user);
+
+		if(userDetails != null)
+			return true;
+
+		return false;
 	}
 
 	@Override
-	public void changePassword(UserDTO userDTO, String userToken) {
+	public Boolean changePassword(UserDTO userDTO, String userToken) {
 
 		long userTokens = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
@@ -138,7 +145,12 @@ public class UserService implements IUserService {
 
 		String newPassword = encoder.encode(userDTO.password);
 		user.setPassword(newPassword);
-		userRepository.save(user);
+		UserDetails userDetails = userRepository.save(user);
+
+		if(userDetails != null)
+			return true;
+
+		return false;
 	}
 
 	@Override

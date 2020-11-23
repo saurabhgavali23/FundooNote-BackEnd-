@@ -9,15 +9,15 @@ public interface IUserService {
 
     String addUser(UserDTO fundooDTO);
 
-    void forgotPassword(String email);
+    String forgotPassword(String email);
 
     UserDetails loginUser(String email, String password);
 
     String verifyAccount(String token);
 
-    void confirmPassword(String userToken);
+    Boolean confirmPassword(String userToken);
 
-    void changePassword(UserDTO userDTO, String userToken);
+    Boolean changePassword(UserDTO userDTO, String userToken);
 
     List getAllUserRecords();
 }

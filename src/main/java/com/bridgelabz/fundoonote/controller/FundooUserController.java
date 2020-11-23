@@ -50,7 +50,7 @@ public class FundooUserController {
 
         userService.verifyAccount(confirmationToken);
         ResponseDTO userData = new ResponseDTO("User Verified");
-        String redirectURL = url+"/successpage";
+        String redirectURL = url + "/successpage";
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(redirectURL));
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -61,7 +61,7 @@ public class FundooUserController {
     public ResponseEntity<ResponseDTO> verifyAccount(@RequestBody UserDTO userDTO) {
 
         UserDetails responseMessage = userService.loginUser(userDTO.email, userDTO.password);
-        ResponseDTO userData = new ResponseDTO("Login Successfully",responseMessage);
+        ResponseDTO userData = new ResponseDTO("Login Successfully", responseMessage);
 
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
     }
@@ -69,34 +69,41 @@ public class FundooUserController {
     @GetMapping("/forgot-password")
     public ResponseEntity<ResponseDTO> forgetPassword(@RequestHeader("email") String email) {
 
-        userService.forgotPassword(email);
+        String message = userService.forgotPassword(email);
 
-        ResponseDTO userData = new ResponseDTO("Password Reset Link Sent to Email");
+        ResponseDTO userData = new ResponseDTO(message);
         return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
     }
 
     @GetMapping("/confirm-reset-password")
     public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestHeader("token") String confirmationToken) {
 
-        userService.confirmPassword(confirmationToken);
-        String redirectURL = url+"/confirmpassword?token=" + confirmationToken;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(redirectURL));
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .headers(headers).build();
+        Boolean isPasswordConfirmed = userService.confirmPassword(confirmationToken);
+        if (isPasswordConfirmed) {
+            String redirectURL = url + "/confirmpassword?token=" + confirmationToken;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(redirectURL));
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .headers(headers).build();
+        }
+        ResponseDTO responseDTO = new ResponseDTO("Password Not Confirmed");
+        return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/change-password")
     public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestHeader("token") String userToken) {
 
-        userService.changePassword(data, userToken);
-        ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
-
-        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
+        Boolean isPasswordChange = userService.changePassword(data, userToken);
+        if (isPasswordChange) {
+            ResponseDTO userData = new ResponseDTO("Password Changed Successfully");
+            return new ResponseEntity<ResponseDTO>(userData, HttpStatus.OK);
+        }
+        ResponseDTO userData = new ResponseDTO("Password Not Changed Successfully");
+        return new ResponseEntity<ResponseDTO>(userData, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/user_records")
-    public ResponseEntity<ResponseDTO> getUserRecords(){
+    public ResponseEntity<ResponseDTO> getUserRecords() {
 
         List allUserRecords = userService.getAllUserRecords();
 
