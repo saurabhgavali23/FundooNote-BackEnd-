@@ -307,4 +307,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals("ReminderNote Updated", actualMessage);
     }
+
+    @Test
+    public void givenReminderNoteDetails_whenReminderNoteUpdate_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateReminder(any()))
+                    .thenThrow(new FundooNoteException("ReminderNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateReminder(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
