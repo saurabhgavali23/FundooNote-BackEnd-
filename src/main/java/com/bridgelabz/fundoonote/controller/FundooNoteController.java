@@ -183,9 +183,9 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/labelNote")
-    public ResponseEntity<ResponseDTO> addLabelInNote(@RequestHeader("token") String userToken, @RequestHeader("labelId") Long labelId,
-                                                      @RequestHeader("noteId") Long noteId){
+    @PostMapping("/labelNote/{labelId}/{noteId}")
+    public ResponseEntity<ResponseDTO> addLabelInNote(@RequestHeader("token") String userToken, @PathVariable(name = "labelId") Long labelId,
+                                                      @PathVariable(name = "noteId") Long noteId){
 
         String message = noteService.addLabelInNote(userToken, labelId, noteId);
 
