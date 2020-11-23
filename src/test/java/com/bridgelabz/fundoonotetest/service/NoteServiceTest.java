@@ -193,4 +193,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals("TrashNote Updated", actualMessage);
     }
+
+    @Test
+    public void givenTrashNoteDetails_whenTrashNoteNotUpdate_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateTrash(any()))
+                    .thenThrow(new FundooNoteException("TrashNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateTrash(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
