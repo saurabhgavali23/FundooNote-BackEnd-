@@ -56,18 +56,7 @@ public class FundooNoteController {
     @GetMapping("/noteList")
     public ResponseEntity<ResponseDTO> noteList(@RequestHeader("token") String userToken){
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userTokens = Long.parseLong(userIdFromToken);
-
-        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
-
-        if(!validateToken)
-            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
-
-        UserDetails userDetails = userRepository.findById(userTokens)
-                .orElseThrow(()-> new FundooNoteException("Invalid_User", HttpStatus.BAD_REQUEST.value()));
-
-        List noteList = noteService.getNoteList(userDetails);
+        List noteList = noteService.getNoteList(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(noteList);
 
@@ -137,15 +126,7 @@ public class FundooNoteController {
     @GetMapping("/pinNoteList")
     public ResponseEntity<ResponseDTO> getPinNote(@RequestHeader("token") String userToken){
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userId = Long.parseLong(userIdFromToken);
-
-        Optional<UserDetails> byId = userRepository.findById(userId);
-
-        if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
-
-        List pinNote = noteService.getPinNotes(userId);
+        List pinNote = noteService.getPinNotes(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(pinNote);
 
@@ -155,15 +136,7 @@ public class FundooNoteController {
     @GetMapping("/archiveNoteList")
     public ResponseEntity<ResponseDTO> getArchiveNotes(@RequestHeader("token") String userToken){
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userId = Long.parseLong(userIdFromToken);
-
-        Optional<UserDetails> byId = userRepository.findById(userId);
-
-        if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
-
-        List archiveNotes = noteService.getArchiveNotes(userId);
+        List archiveNotes = noteService.getArchiveNotes(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(archiveNotes);
 
@@ -173,15 +146,7 @@ public class FundooNoteController {
     @GetMapping("/trashNoteList")
     public ResponseEntity<ResponseDTO> getTrashNotes(@RequestHeader("token") String userToken){
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userId = Long.parseLong(userIdFromToken);
-
-        Optional<UserDetails> byId = userRepository.findById(userId);
-
-        if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
-
-        List trashNotes = noteService.getTrashNotes(userId);
+        List trashNotes = noteService.getTrashNotes(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(trashNotes);
 
@@ -191,15 +156,7 @@ public class FundooNoteController {
     @GetMapping("/reminderNoteList")
     public ResponseEntity<ResponseDTO> getReminderNotes(@RequestHeader("token") String userToken){
 
-        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
-        long userId = Long.parseLong(userIdFromToken);
-
-        Optional<UserDetails> byId = userRepository.findById(userId);
-
-        if(!byId.isPresent())
-            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
-
-        List reminderNotes = noteService.getReminderNotes(userId);
+        List reminderNotes = noteService.getReminderNotes(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(reminderNotes);
 

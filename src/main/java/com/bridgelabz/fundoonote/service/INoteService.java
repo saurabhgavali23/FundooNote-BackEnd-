@@ -11,7 +11,7 @@ public interface INoteService {
 
     public String SaveNote(NoteDTO noteDTO, String userToken);
 
-    public List getNoteList(UserDetails userDetails);
+    public List getNoteList(String userToken);
 
     String updatePin(NoteDTO noteDTO);
 
@@ -21,11 +21,11 @@ public interface INoteService {
 
     String updateColor(NoteDTO noteDTO);
 
-    List getPinNotes(Long userToken);
+    List getPinNotes(String userToken);
 
-    List getArchiveNotes(Long userId);
+    List getArchiveNotes(String userToken);
 
-    List getTrashNotes(Long userId);
+    List getTrashNotes(String userToken);
 
     String updateTitleAndDescription(NoteDTO noteDTO);
 
@@ -33,7 +33,7 @@ public interface INoteService {
 
     String updateReminder(NoteDTO noteDTO);
 
-    List getReminderNotes(Long userId);
+    List getReminderNotes(String userToken);
 
     LabelDetails addLabel(String userToken, LabelDTO labelName);
 

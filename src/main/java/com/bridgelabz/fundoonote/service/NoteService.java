@@ -63,7 +63,18 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List getNoteList(UserDetails userDetails) {
+    public List getNoteList(String userToken) {
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userTokens = Long.parseLong(userIdFromToken);
+
+        Boolean validateToken = jwtToken.validateToken(userToken, userIdFromToken);
+
+        if(!validateToken)
+            throw new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value());
+
+        UserDetails userDetails = userRepository.findById(userTokens)
+                .orElseThrow(()-> new FundooNoteException("Invalid_User", HttpStatus.BAD_REQUEST.value()));
 
         List<NoteDetails> noteList = noteRepository.getNoteList(userDetails.id);
 
@@ -200,9 +211,17 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List getPinNotes(Long userToken) {
+    public List getPinNotes(String userToken) {
 
-        List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userToken);
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        List<NoteDetails> pinNoteList = noteRepository.getPinNoteList(userId);
 
         if(pinNoteList.isEmpty())
             throw new FundooNoteException("PinNotes_Not_Found", HttpStatus.NOT_FOUND.value());
@@ -211,7 +230,15 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List getArchiveNotes(Long userId) {
+    public List getArchiveNotes(String userToken) {
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List<NoteDetails> archiveNoteList = noteRepository.getArchiveNoteList(userId);
 
@@ -222,7 +249,15 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List getTrashNotes(Long userId) {
+    public List getTrashNotes(String userToken) {
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List<NoteDetails> trashNoteList = noteRepository.getTrashNoteList(userId);
 
@@ -233,7 +268,15 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List getReminderNotes(Long userId) {
+    public List getReminderNotes(String userToken) {
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        Optional<UserDetails> byId = userRepository.findById(userId);
+
+        if(!byId.isPresent())
+            throw new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value());
 
         List<NoteDetails> reminderNoteList = noteRepository.getReminderNoteList(userId);
 
