@@ -183,4 +183,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenTrashNoteDetails_whenTrashNoteUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updateTrash(any())).thenReturn("TrashNote Updated");
+
+        String actualMessage = noteServiceMock.updateTrash(any());
+
+        Assert.assertEquals("TrashNote Updated", actualMessage);
+    }
 }
