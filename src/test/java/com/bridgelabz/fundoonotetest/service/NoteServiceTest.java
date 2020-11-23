@@ -155,4 +155,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals("ArchiveNote Updated", actualMessage);
     }
+
+    @Test
+    public void givenArchiveNoteDetails_whenArchiveNoteNotUpdate_thenThrowException() {
+
+        try{
+            when(noteServiceMock.updateArchived(any()))
+                    .thenThrow(new FundooNoteException("ArchiveNote Not Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateArchived(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
