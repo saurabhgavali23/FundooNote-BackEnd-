@@ -28,9 +28,9 @@ public class NoteServiceTest {
     private NoteDTO noteDTO;
 
     @Test
-    public void givenNoteDetails_whenNoteSave_shouldReturnSuccessMessage(){
+    public void givenNoteDetails_whenNoteSave_shouldReturnSuccessMessage() {
 
-        when(noteServiceMock.SaveNote(any(),anyString())).thenReturn("Note_Added_Successfully");
+        when(noteServiceMock.SaveNote(any(), anyString())).thenReturn("Note_Added_Successfully");
 
         String message = noteServiceMock.SaveNote(any(), anyString());
 
@@ -38,52 +38,52 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void givenNoteDetails_whenNoteNotSave_thenThrowException(){
+    public void givenNoteDetails_whenNoteNotSave_thenThrowException() {
 
-        try{
-            when(noteServiceMock.SaveNote(any(),anyString()))
+        try {
+            when(noteServiceMock.SaveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value()));
 
             noteServiceMock.SaveNote(any(), anyString());
 
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
 
     @Test
-    public void givenNoteDetails_whenUserTokenNotValid_thenThrowException(){
+    public void givenNoteDetails_whenUserTokenNotValid_thenThrowException() {
 
-        try{
-            when(noteServiceMock.SaveNote(any(),anyString()))
+        try {
+            when(noteServiceMock.SaveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Token_Not_Valid", HttpStatus.BAD_REQUEST.value()));
 
             noteServiceMock.SaveNote(any(), anyString());
 
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(400, n.getHttpStatus());
         }
     }
 
     @Test
-    public void givenNoteDetails_whenUserIdNotValid_thenThrowException(){
+    public void givenNoteDetails_whenUserIdNotValid_thenThrowException() {
 
-        try{
-            when(noteServiceMock.SaveNote(any(),anyString()))
+        try {
+            when(noteServiceMock.SaveNote(any(), anyString()))
                     .thenThrow(new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.SaveNote(any(), anyString());
 
-        }catch (FundooNoteException n){
+        } catch (FundooNoteException n) {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
 
     @Test
-    public void givenUserToken_whenUserValid_shouldReturnNoteList(){
+    public void givenUserToken_whenUserValid_shouldReturnNoteList() {
 
         List<NoteDetails> noteDetailsList = new ArrayList<>();
 
@@ -92,5 +92,19 @@ public class NoteServiceTest {
         List noteList = noteServiceMock.getNoteList(anyString());
 
         Assert.assertEquals(noteDetailsList, noteList);
+    }
+
+    @Test
+    public void givenUserToken_whenNotesNotAvailable_thenThrowException() {
+
+        try {
+            when(noteServiceMock.getNoteList(anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getNoteList(anyString());
+        } catch (FundooNoteException n) {
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
     }
 }
