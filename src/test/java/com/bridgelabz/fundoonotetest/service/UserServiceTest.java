@@ -196,6 +196,19 @@ public class UserServiceTest {
         String actualMessage = userServiceMock.forgotPassword("gavalisaurabh02@gmail.com");
 
         Assert.assertEquals("Password Reset Link Sent to Email", actualMessage);
+    }
 
+    @Test
+    public void givenUserEmail_whenEmailIsNotValid_thenThrowEmailException(){
+
+        try {
+            when(userServiceMock.forgotPassword("gavalisaurabh@gmail.com")).thenThrow(new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
+
+            userServiceMock.forgotPassword("gavalisaurabh@gmail.com");
+
+        }catch (FundooUserException u){
+
+            Assert.assertEquals(400, u.getHttpStatus());
+        }
     }
 }
