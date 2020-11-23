@@ -63,4 +63,19 @@ public class NoteServiceTest {
             Assert.assertEquals(400, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenNoteDetails_whenUserIdNotValid_thenThrowException(){
+
+        try{
+            when(noteServiceMock.SaveNote(any(),anyString()))
+                    .thenThrow(new FundooNoteException("Invalid_user", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.SaveNote(any(), anyString());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
