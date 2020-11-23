@@ -297,4 +297,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenReminderNoteDetails_whenReminderNoteUpdate_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.updateReminder(any())).thenReturn("ReminderNote Updated");
+
+        String actualMessage = noteServiceMock.updateReminder(any());
+
+        Assert.assertEquals("ReminderNote Updated", actualMessage);
+    }
 }
