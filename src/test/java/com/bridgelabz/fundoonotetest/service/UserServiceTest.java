@@ -241,4 +241,14 @@ public class UserServiceTest {
 
         Assert.assertEquals(true, isPasswordConfirm);
     }
+
+    @Test
+    public void givenUserToken_whenPasswordNotConfirm_shouldReturnFalse(){
+
+        when(userServiceMock.confirmPassword(anyString())).thenReturn(false);
+
+        Boolean isPasswordConfirm = userServiceMock.confirmPassword(anyString());
+
+        Assert.assertEquals(false, isPasswordConfirm);
+    }
 }
