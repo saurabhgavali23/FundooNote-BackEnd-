@@ -131,4 +131,18 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenPinNoteDetails_whenPinNoteIdNotFound_theThrowException() {
+
+        try{
+            when(noteServiceMock.updatePin(any()))
+                    .thenThrow(new FundooNoteException("Note Not Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.updatePin(any());
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
