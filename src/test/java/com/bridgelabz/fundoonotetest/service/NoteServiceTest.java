@@ -333,4 +333,18 @@ public class NoteServiceTest {
 
         Assert.assertEquals(noteDetailsList, pinNotesLis);
     }
+
+    @Test
+    public void givenUserToken_whenPinNoteNotFound_thenThrowNotFoundException() {
+
+        try {
+            when(noteServiceMock.getPinNotes(anyString())).thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getPinNotes(anyString());
+
+        } catch (FundooNoteException n) {
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
