@@ -402,4 +402,16 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenUserToken_whenReminderNoteFound_shouldReturnReminderNoteList() {
+
+        List<NoteDetails> noteDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getReminderNotes(anyString())).thenReturn(noteDetailsList);
+
+        List reminderNotesList = noteServiceMock.getReminderNotes(anyString());
+
+        Assert.assertEquals(noteDetailsList, reminderNotesList);
+    }
 }
