@@ -468,4 +468,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals(labelDetails, labelDetails1);
     }
+
+    @Test
+    public void givenLabelDetails_whenUserNotValid_thenThrowException() {
+
+        try {
+            when(noteServiceMock.addLabel(anyString(), any()))
+                    .thenThrow(new FundooNoteException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.addLabel(anyString(), any());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
