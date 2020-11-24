@@ -414,4 +414,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals(noteDetailsList, reminderNotesList);
     }
+
+    @Test
+    public void givenUserToken_whenReminderNoteNotFound_thenThrowNotFoundException() {
+
+        try {
+            when(noteServiceMock.getReminderNotes(anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getReminderNotes(anyString());
+
+        } catch (FundooNoteException n) {
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
