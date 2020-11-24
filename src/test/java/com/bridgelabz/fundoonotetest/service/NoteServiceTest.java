@@ -563,4 +563,16 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenUserToken_whenLabelNoteAvailable_shouldReturnLabelNoteList() {
+
+        List<LabelDetails> labelDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getLabelDetails(anyString())).thenReturn(labelDetailsList);
+
+        List labelDetails = noteServiceMock.getLabelDetails(anyString());
+
+        Assert.assertEquals(labelDetails, labelDetailsList);
+    }
 }
