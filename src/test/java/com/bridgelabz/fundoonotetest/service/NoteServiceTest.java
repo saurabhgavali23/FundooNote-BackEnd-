@@ -548,4 +548,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals("Label_Updated_Successfully", actualMessage);
     }
+
+    @Test
+    public void givenLabelDetails_whenLabelNotUpdate_thenThrowException() {
+
+        try {
+            when(noteServiceMock.updateLabel(anyString(), any()))
+                    .thenThrow(new FundooNoteException("Label_Not_Update", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.updateLabel(anyString(), any());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
