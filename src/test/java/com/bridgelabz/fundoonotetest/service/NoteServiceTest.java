@@ -575,4 +575,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals(labelDetails, labelDetailsList);
     }
+
+    @Test
+    public void givenUserToken_whenLabelNoteNotAvailable_thenThrowException() {
+
+        try {
+            when(noteServiceMock.getLabelDetails(anyString()))
+                    .thenThrow(new FundooNoteException("Label_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getLabelDetails(anyString());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
