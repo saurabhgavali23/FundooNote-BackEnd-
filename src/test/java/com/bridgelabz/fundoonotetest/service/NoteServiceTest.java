@@ -375,4 +375,16 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenUserToken_whenTrashNoteFound_shouldReturnTrashNoteList() {
+
+        List<NoteDetails> noteDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getTrashNotes(anyString())).thenReturn(noteDetailsList);
+
+        List trashNotesList = noteServiceMock.getTrashNotes(anyString());
+
+        Assert.assertEquals(noteDetailsList, trashNotesList);
+    }
 }
