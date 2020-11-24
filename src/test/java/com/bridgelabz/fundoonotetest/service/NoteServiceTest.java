@@ -439,4 +439,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals("Note_Deleted_Successfully", actualMessage);
     }
+
+    @Test
+    public void givenNoteDetails_whenNoteNotFound_thenThrowNotFoundException() {
+
+        try{
+            when(noteServiceMock.deleteNotePermanently(any()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.deleteNotePermanently(any());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
