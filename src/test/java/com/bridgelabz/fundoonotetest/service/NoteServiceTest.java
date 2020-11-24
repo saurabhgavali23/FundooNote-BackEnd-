@@ -483,4 +483,19 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenLabelDetails_whenLabelNotSave_thenThrowException() {
+
+        try {
+            when(noteServiceMock.addLabel(anyString(), any()))
+                    .thenThrow(new FundooNoteException("Note_Not_Save", HttpStatus.NOT_IMPLEMENTED.value()));
+
+            noteServiceMock.addLabel(anyString(), any());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(501, n.getHttpStatus());
+        }
+    }
 }
