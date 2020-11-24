@@ -508,4 +508,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals("Note_Label_Saved", actualMessage);
     }
+
+    @Test
+    public void givenLabelDetails_whenNoteNotFound_thenThrowException() {
+
+        try {
+            when(noteServiceMock.addLabelInNote(anyString(), anyLong(), anyLong()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.addLabelInNote(anyString(), anyLong(), anyLong());
+
+        }catch (FundooNoteException n){
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
