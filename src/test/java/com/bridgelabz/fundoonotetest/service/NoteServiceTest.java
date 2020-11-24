@@ -498,4 +498,14 @@ public class NoteServiceTest {
             Assert.assertEquals(501, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenLabelDetails_whenLabelSaveInNote_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.addLabelInNote(anyString(), anyLong(), anyLong())).thenReturn("Note_Label_Saved");
+
+        String actualMessage = noteServiceMock.addLabelInNote(anyString(), anyLong(), anyLong());
+
+        Assert.assertEquals("Note_Label_Saved", actualMessage);
+    }
 }
