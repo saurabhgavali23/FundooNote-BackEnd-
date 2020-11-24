@@ -429,4 +429,14 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenNoteDetails_whenNoteDeleted_shouldReturnSuccessMessage() {
+
+        when(noteServiceMock.deleteNotePermanently(any())).thenReturn("Note_Deleted_Successfully");
+
+        String actualMessage = noteServiceMock.deleteNotePermanently(any());
+
+        Assert.assertEquals("Note_Deleted_Successfully", actualMessage);
+    }
 }
