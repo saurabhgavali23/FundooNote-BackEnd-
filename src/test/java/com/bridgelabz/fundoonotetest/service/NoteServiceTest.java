@@ -387,4 +387,19 @@ public class NoteServiceTest {
 
         Assert.assertEquals(noteDetailsList, trashNotesList);
     }
+
+    @Test
+    public void givenUserToken_whenTrashNoteNotFound_thenThrowNotFoundException() {
+
+        try {
+            when(noteServiceMock.getTrashNotes(anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getTrashNotes(anyString());
+
+        } catch (FundooNoteException n) {
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
+    }
 }
