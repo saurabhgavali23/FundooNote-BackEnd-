@@ -347,4 +347,16 @@ public class NoteServiceTest {
             Assert.assertEquals(404, n.getHttpStatus());
         }
     }
+
+    @Test
+    public void givenUserToken_whenArchiveNoteFound_shouldReturnArchiveNoteList() {
+
+        List<NoteDetails> noteDetailsList = new ArrayList<>();
+
+        when(noteServiceMock.getArchiveNotes(anyString())).thenReturn(noteDetailsList);
+
+        List archiveNotesList = noteServiceMock.getArchiveNotes(anyString());
+
+        Assert.assertEquals(noteDetailsList, archiveNotesList);
+    }
 }
