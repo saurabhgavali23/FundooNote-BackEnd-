@@ -338,7 +338,8 @@ public class NoteServiceTest {
     public void givenUserToken_whenPinNoteNotFound_thenThrowNotFoundException() {
 
         try {
-            when(noteServiceMock.getPinNotes(anyString())).thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+            when(noteServiceMock.getPinNotes(anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
 
             noteServiceMock.getPinNotes(anyString());
 
@@ -358,5 +359,20 @@ public class NoteServiceTest {
         List archiveNotesList = noteServiceMock.getArchiveNotes(anyString());
 
         Assert.assertEquals(noteDetailsList, archiveNotesList);
+    }
+
+    @Test
+    public void givenUserToken_whenArchiveNoteNotFound_thenThrowNotFoundException() {
+
+        try {
+            when(noteServiceMock.getArchiveNotes(anyString()))
+                    .thenThrow(new FundooNoteException("Note_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+            noteServiceMock.getArchiveNotes(anyString());
+
+        } catch (FundooNoteException n) {
+
+            Assert.assertEquals(404, n.getHttpStatus());
+        }
     }
 }
