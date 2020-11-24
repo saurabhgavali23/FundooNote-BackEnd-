@@ -1,7 +1,9 @@
 package com.bridgelabz.fundoonotetest.service;
 
+import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.module.LabelDetails;
 import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.service.NoteService;
 import org.junit.Assert;
@@ -453,5 +455,17 @@ public class NoteServiceTest {
 
             Assert.assertEquals(404, n.getHttpStatus());
         }
+    }
+
+    @Test
+    public void givenLabelDetails_whenLabelSave_shouldReturnLabelDetails() {
+
+        LabelDetails labelDetails = new LabelDetails(new LabelDTO());
+
+        when(noteServiceMock.addLabel(anyString(), any())).thenReturn(labelDetails);
+
+        LabelDetails labelDetails1 = noteServiceMock.addLabel(anyString(), any());
+
+        Assert.assertEquals(labelDetails, labelDetails1);
     }
 }
