@@ -3,7 +3,7 @@ package com.bridgelabz.fundoonote.controller;
 import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.module.LabelDetails;
-import com.bridgelabz.fundoonote.service.NoteService;
+import com.bridgelabz.fundoonote.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +17,12 @@ import java.util.List;
 public class FundooLabelController {
 
     @Autowired
-    NoteService noteService;
+    LabelService labelService;
 
     @PostMapping("/label")
     public ResponseEntity<ResponseDTO> addLabels(@RequestHeader("token") String userToken, @RequestBody LabelDTO labelDTO){
 
-        LabelDetails responseLabelDetails = noteService.addLabel(userToken, labelDTO);
+        LabelDetails responseLabelDetails = labelService.addLabel(userToken, labelDTO);
 
         ResponseDTO responseDTO = new ResponseDTO(responseLabelDetails);
 
@@ -33,7 +33,7 @@ public class FundooLabelController {
     public ResponseEntity<ResponseDTO> addLabelInNote(@RequestHeader("token") String userToken, @PathVariable(name = "labelId") Long labelId,
                                                       @PathVariable(name = "noteId") Long noteId){
 
-        String message = noteService.addLabelInNote(userToken, labelId, noteId);
+        String message = labelService.addLabelInNote(userToken, labelId, noteId);
 
         ResponseDTO responseDTO = new ResponseDTO(message);
 
@@ -44,7 +44,7 @@ public class FundooLabelController {
     public ResponseEntity<ResponseDTO> updateLabel(@RequestHeader("token") String userToken,
                                                    @RequestBody LabelDTO labelDTO){
 
-        String message = noteService.updateLabel(userToken, labelDTO);
+        String message = labelService.updateLabel(userToken, labelDTO);
 
         ResponseDTO responseDTO = new ResponseDTO(message);
 
@@ -54,7 +54,7 @@ public class FundooLabelController {
     @GetMapping("/labelList")
     public ResponseEntity<ResponseDTO> getLabelDetails(@RequestHeader("token") String userToken){
 
-        List labelDetails = noteService.getLabelDetails(userToken);
+        List labelDetails = labelService.getLabelDetails(userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(labelDetails);
 
