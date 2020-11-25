@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fundoonote/note")
+@RequestMapping("/note")
 @CrossOrigin("*")
 public class FundooNoteController {
 

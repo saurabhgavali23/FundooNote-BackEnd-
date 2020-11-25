@@ -23,7 +23,7 @@ import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.service.UserService;
 
 @RestController
-@RequestMapping("/fundoonote")
+@RequestMapping("/user")
 @CrossOrigin(origins = "*")
 public class FundooUserController {
 
