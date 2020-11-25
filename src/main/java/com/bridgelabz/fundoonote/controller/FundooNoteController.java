@@ -168,46 +168,4 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
-
-    @PostMapping("/label")
-    public ResponseEntity<ResponseDTO> addLabels(@RequestHeader("token") String userToken, @RequestBody LabelDTO labelDTO){
-
-        LabelDetails responseLabelDetails = noteService.addLabel(userToken, labelDTO);
-
-        ResponseDTO responseDTO = new ResponseDTO(responseLabelDetails);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @PostMapping("/labelNote/{labelId}/{noteId}")
-    public ResponseEntity<ResponseDTO> addLabelInNote(@RequestHeader("token") String userToken, @PathVariable(name = "labelId") Long labelId,
-                                                      @PathVariable(name = "noteId") Long noteId){
-
-        String message = noteService.addLabelInNote(userToken, labelId, noteId);
-
-        ResponseDTO responseDTO = new ResponseDTO(message);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @PostMapping("/updateLabel")
-    public ResponseEntity<ResponseDTO> updateLabel(@RequestHeader("token") String userToken,
-                                                    @RequestBody LabelDTO labelDTO){
-
-        String message = noteService.updateLabel(userToken, labelDTO);
-
-        ResponseDTO responseDTO = new ResponseDTO(message);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @GetMapping("/labelList")
-    public ResponseEntity<ResponseDTO> getLabelDetails(@RequestHeader("token") String userToken){
-
-        List labelDetails = noteService.getLabelDetails(userToken);
-
-        ResponseDTO responseDTO = new ResponseDTO(labelDetails);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
 }
