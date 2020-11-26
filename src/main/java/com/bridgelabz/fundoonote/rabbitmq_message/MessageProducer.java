@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoonote.MessageProducer;
+package com.bridgelabz.fundoonote.rabbitmq_message;
 
 import com.bridgelabz.fundoonote.configuration.RabbitMqConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
