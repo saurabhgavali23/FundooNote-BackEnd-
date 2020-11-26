@@ -38,7 +38,11 @@ compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', vers
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-	
+//	// https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit
+//	compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '2.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
