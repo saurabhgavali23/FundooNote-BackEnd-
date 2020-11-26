@@ -1,14 +1,10 @@
 package com.bridgelabz.fundoonote.controller;
 
-import com.bridgelabz.fundoonote.dto.LabelDTO;
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.dto.ResponseDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
-import com.bridgelabz.fundoonote.module.LabelDetails;
-import com.bridgelabz.fundoonote.repository.NoteRepository;
-import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.service.NoteService;
-import com.bridgelabz.fundoonote.util.JwtToken;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +22,8 @@ public class FundooNoteController {
     @Autowired
     NoteService noteService;
 
-    @Autowired
-    NoteRepository noteRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    JwtToken jwtToken;
-
     @PostMapping("/saveNote")
+    @ApiOperation("Api for save the notes")
     public ResponseEntity<ResponseDTO> saveNote(@Valid @RequestBody NoteDTO noteDTO, @RequestHeader("token") String userToken, BindingResult result) {
 
         if (result.hasErrors()) {
@@ -50,6 +38,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/noteList")
+    @ApiOperation("Api for retrieve all notes")
     public ResponseEntity<ResponseDTO> noteList(@RequestHeader("token") String userToken){
 
         List noteList = noteService.getNoteList(userToken);
@@ -60,6 +49,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/pinUnpinNote")
+    @ApiOperation("Api for pin or unpin note")
     public ResponseEntity<ResponseDTO> updatePin(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updatePin(noteDTO);
@@ -70,6 +60,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/archiveNote")
+    @ApiOperation("Api for archive or un-archive note")
     public ResponseEntity<ResponseDTO> updateArchive(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updateArchived(noteDTO);
@@ -80,6 +71,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/trashNote")
+    @ApiOperation("Api for trash or restore note")
     public ResponseEntity<ResponseDTO> updateTrash(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updateTrash(noteDTO);
@@ -90,6 +82,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/colorNote")
+    @ApiOperation("Api for update color of note")
     public ResponseEntity<ResponseDTO> updateColor(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updateColor(noteDTO);
@@ -100,6 +93,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/titleAndDescriptionNote")
+    @ApiOperation("Api for update title and description of note")
     public ResponseEntity<ResponseDTO> updateTitleAndDescription(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updateTitleAndDescription(noteDTO);
@@ -110,6 +104,7 @@ public class FundooNoteController {
     }
 
     @PostMapping("/reminderNote")
+    @ApiOperation("Api for update reminder of note")
     public ResponseEntity<ResponseDTO> updateReminder(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.updateReminder(noteDTO);
@@ -120,6 +115,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/pinNoteList")
+    @ApiOperation("Api for retrieve all pin notes")
     public ResponseEntity<ResponseDTO> getPinNote(@RequestHeader("token") String userToken){
 
         List pinNote = noteService.getPinNotes(userToken);
@@ -130,6 +126,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/archiveNoteList")
+    @ApiOperation("Api for retrieve all archive notes")
     public ResponseEntity<ResponseDTO> getArchiveNotes(@RequestHeader("token") String userToken){
 
         List archiveNotes = noteService.getArchiveNotes(userToken);
@@ -140,6 +137,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/trashNoteList")
+    @ApiOperation("Api for retrieve all trash notes")
     public ResponseEntity<ResponseDTO> getTrashNotes(@RequestHeader("token") String userToken){
 
         List trashNotes = noteService.getTrashNotes(userToken);
@@ -150,6 +148,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/reminderNoteList")
+    @ApiOperation("Api for retrieve all reminder notes")
     public ResponseEntity<ResponseDTO> getReminderNotes(@RequestHeader("token") String userToken){
 
         List reminderNotes = noteService.getReminderNotes(userToken);
@@ -160,6 +159,7 @@ public class FundooNoteController {
     }
 
     @DeleteMapping("/note")
+    @ApiOperation("Api for permanently delete note")
     public ResponseEntity<ResponseDTO> deleteNotePermanently(@RequestBody NoteDTO noteDTO){
 
         String message = noteService.deleteNotePermanently(noteDTO);

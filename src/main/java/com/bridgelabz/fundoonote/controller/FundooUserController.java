@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.bridgelabz.fundoonote.exception.FundooUserException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,7 @@ public class FundooUserController {
     UserService userService;
 
     @PostMapping("/user")
+    @ApiOperation("Api for add user")
     public ResponseEntity<ResponseDTO> newUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) throws FundooUserException {
 
         if (result.hasErrors()) {
@@ -46,6 +48,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/confirm-account")
+    @ApiOperation("Api for confirm user account")
     public ResponseEntity<ResponseDTO> confirmAccount(@RequestParam("token") String confirmationToken) {
 
         userService.verifyAccount(confirmationToken);
@@ -58,6 +61,7 @@ public class FundooUserController {
     }
 
     @PostMapping("/login")
+    @ApiOperation("Api for login user")
     public ResponseEntity<ResponseDTO> verifyAccount(@RequestBody UserDTO userDTO) {
 
         UserDetails responseMessage = userService.loginUser(userDTO.email, userDTO.password);
@@ -67,6 +71,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/forgot-password")
+    @ApiOperation("Api for forgot user password")
     public ResponseEntity<ResponseDTO> forgetPassword(@RequestHeader("email") String email) {
 
         String message = userService.forgotPassword(email);
@@ -76,6 +81,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/confirm-reset-password")
+    @ApiOperation("Api for confirm reset password of user")
     public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestHeader("token") String confirmationToken) {
 
         Boolean isPasswordConfirmed = userService.confirmPassword(confirmationToken);
@@ -91,6 +97,7 @@ public class FundooUserController {
     }
 
     @PostMapping("/change-password")
+    @ApiOperation("Api for change user password")
     public ResponseEntity<ResponseDTO> changePassword(@RequestBody UserDTO data, @RequestHeader("token") String userToken) {
 
         Boolean isPasswordChange = userService.changePassword(data, userToken);
@@ -103,6 +110,7 @@ public class FundooUserController {
     }
 
     @GetMapping("/user_records")
+    @ApiOperation("Api for retrieve all users")
     public ResponseEntity<ResponseDTO> getUserRecords() {
 
         List allUserRecords = userService.getAllUserRecords();
