@@ -62,8 +62,10 @@ public class UserService implements IUserService {
 		UserDetails userDetails = userRepository.findByEmail(email)
 				.orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
+		String userIdFromToken = jwtToken.generateToken(userDetails.id.toString());
+
 		String path = "To complete the password reset process, please click here: "
-				+url+"/user/confirm-reset-password?token="+userDetails.id;
+				+url+"/user/confirm-reset-password?token="+userIdFromToken;
 
 		rabbitMQProducer.sendMessage(new Email(userDetails.email, "Complete Password Reset", path));
 
@@ -116,7 +118,7 @@ public class UserService implements IUserService {
 		UserDetails user = userRepository.findById(userTokens)
 				.orElseThrow(() -> new FundooUserException("Invalid_Email", HttpStatus.BAD_REQUEST.value()));
 
-		if(!jwtToken.validateToken(userToken,user.email)){
+		if(!jwtToken.validateToken(userToken,user.id.toString())){
 			throw new FundooUserException("Invalid_link", HttpStatus.BAD_REQUEST.value());
 		}
 		user.setVerified(true);

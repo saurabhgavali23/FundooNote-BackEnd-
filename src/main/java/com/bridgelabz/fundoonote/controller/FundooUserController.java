@@ -82,7 +82,7 @@ public class FundooUserController {
 
     @GetMapping("/confirm-reset-password")
     @ApiOperation("Api for confirm reset password of user")
-    public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestHeader("token") String confirmationToken) {
+    public ResponseEntity<ResponseDTO> confirmResetPassword(@RequestParam("token") String confirmationToken) {
 
         Boolean isPasswordConfirmed = userService.confirmPassword(confirmationToken);
         if (isPasswordConfirmed) {
