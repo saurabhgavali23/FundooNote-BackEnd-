@@ -1,6 +1,8 @@
 package com.bridgelabz.fundoonote.service;
 
 import com.bridgelabz.fundoonote.exception.FundooUserException;
+import com.bridgelabz.fundoonote.module.Email;
+import com.bridgelabz.fundoonote.rabbitmq_message.MessageProducer;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +36,9 @@ public class UserService implements IUserService {
 	@Autowired
 	JwtToken jwtToken;
 
+	@Autowired
+	MessageProducer messageProducer;
+
 	@Override
 	public String addUser(UserDTO userDTO) {
 
@@ -47,12 +52,11 @@ public class UserService implements IUserService {
 		UserDetails details = userRepository.save(userDetails);
 		String token = jwtToken.generateToken(userDetails.id.toString());
 
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(details.email);
-		mailMessage.setSubject("Complete Registration");
-		mailMessage.setText("To Confirm Your Account, please click here : "
-				+url+"/fundoonote/confirm-account?token=" + token);
-		emailSenderService.sendEmail(mailMessage);
+		String path = "To Confirm Your Account, please click here : "
+				+url+"/fundoonote/confirm-account?token=" + token;
+
+		messageProducer.sendMessage(new Email(details.email, "Complete Registration", path));
+
 		return "User Added Successfully";
 	}
 
