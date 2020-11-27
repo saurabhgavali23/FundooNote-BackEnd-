@@ -72,7 +72,7 @@ public class FundooUserController {
 
     @GetMapping("/forgot-password")
     @ApiOperation("Api for forgot user password")
-    public ResponseEntity<ResponseDTO> forgetPassword(@RequestHeader("email") String email) {
+    public ResponseEntity<ResponseDTO> forgetPassword(@RequestParam("email") String email) {
 
         String message = userService.forgotPassword(email);
 

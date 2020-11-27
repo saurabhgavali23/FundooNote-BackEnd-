@@ -7,7 +7,6 @@ import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +25,6 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private EmailSenderService emailSenderService;
 
 	@Autowired
 	BCryptPasswordEncoder encoder;
@@ -53,7 +49,7 @@ public class UserService implements IUserService {
 		String token = jwtToken.generateToken(userDetails.id.toString());
 
 		String path = "To Confirm Your Account, please click here : "
-				+url+"/fundoonote/confirm-account?token=" + token;
+				+url+"/user/confirm-account?token=" + token;
 
 		rabbitMQProducer.sendMessage(new Email(details.email, "Complete Registration", path));
 
@@ -67,7 +63,7 @@ public class UserService implements IUserService {
 				.orElseThrow(() -> new FundooUserException("Invalid Email Id", HttpStatus.BAD_REQUEST.value()));
 
 		String path = "To complete the password reset process, please click here: "
-				+url+"/fundoonote/confirm-reset-password?token="+userDetails.id;
+				+url+"/user/confirm-reset-password?token="+userDetails.id;
 
 		rabbitMQProducer.sendMessage(new Email(userDetails.email, "Complete Password Reset", path));
 
