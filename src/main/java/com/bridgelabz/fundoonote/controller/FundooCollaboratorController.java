@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/collaborator")
@@ -42,6 +43,17 @@ public class FundooCollaboratorController {
         String message = collaboratorService.updateCollaborator(collaboratorDTO, userToken);
 
         ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/collaboratorList")
+    @ApiOperation("Api for retrieve collaborator list")
+    public ResponseEntity<ResponseDTO> getCollaboratorNoteList(@RequestHeader("token") String userToken){
+
+        List<CollaboratorDetails> collaboratorList = collaboratorService.getCollaboratorList(userToken);
+
+        ResponseDTO responseDTO = new ResponseDTO(collaboratorList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

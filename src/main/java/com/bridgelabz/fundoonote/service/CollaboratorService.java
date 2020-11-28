@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CollaboratorService implements ICollaboratorService {
 
@@ -83,5 +85,24 @@ public class CollaboratorService implements ICollaboratorService {
             throw new FundooNoteException("Collaborator_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());
 
         return "Collaborator_Updated";
+    }
+
+    @Override
+    public List<CollaboratorDetails> getCollaboratorList(String userToken) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value()));
+
+        if(!jwtToken.validateToken(userToken, userDetails.id.toString()))
+            throw new FundooUserException("Invalid_Token", HttpStatus.BAD_REQUEST.value());
+
+        List<CollaboratorDetails> collaboratorDetailsList = collaboratorRepository.findAll();
+
+        if(collaboratorDetailsList.isEmpty())
+            throw new FundooUserException("Collaborators_Notes_Not_Found", HttpStatus.NOT_FOUND.value());
+
+        return collaboratorDetailsList;
     }
 }
