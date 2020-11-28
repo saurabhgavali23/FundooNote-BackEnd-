@@ -138,7 +138,7 @@ public class UserService implements IUserService {
 		UserDetails user = userRepository.findById(userTokens)
 				.orElseThrow(() -> new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value()));
 
-		if(!jwtToken.validateToken(userToken, user.email)){
+		if(!jwtToken.validateToken(userToken, user.id.toString())){
 			throw new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value());
 		}
 
