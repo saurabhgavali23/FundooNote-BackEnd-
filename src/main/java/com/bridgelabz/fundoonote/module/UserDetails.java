@@ -76,6 +76,13 @@ public class UserDetails implements Serializable {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private List<LabelDetails> labelDetails;
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	private List<CollaboratorDetails> collaboratorDetails;
+
+	public List<CollaboratorDetails> getCollaboratorDetails() {
+		return collaboratorDetails;
+	}
+
 	public List<LabelDetails> getLabelDetails() {
 		return labelDetails;
 	}

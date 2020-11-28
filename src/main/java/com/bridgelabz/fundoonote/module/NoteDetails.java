@@ -43,6 +43,13 @@ public class NoteDetails implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<LabelDetails> labelDetails;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<CollaboratorDetails> collaboratorDetails;
+
+    public List<CollaboratorDetails> getCollaboratorDetails() {
+        return collaboratorDetails;
+    }
+
     public List<LabelDetails> getLabelDetails() {
         return labelDetails;
     }
