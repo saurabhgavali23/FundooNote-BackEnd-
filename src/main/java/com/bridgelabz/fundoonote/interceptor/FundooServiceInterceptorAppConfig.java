@@ -15,7 +15,10 @@ public class FundooServiceInterceptorAppConfig implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
 		System.out.println("ServiceAppConfig");
 		registry.addInterceptor(fundooServiceInterceptor)
-		.addPathPatterns("/fundoonote/*")
-		.excludePathPatterns("/fundoonote/login");
+		.addPathPatterns("/note/*")
+				.addPathPatterns("/user/*")
+				.addPathPatterns("/label/*")
+				.addPathPatterns("/collaborator/*")
+		.excludePathPatterns("/user/login");
 	}
 }

@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonote.module;
 
 import com.bridgelabz.fundoonote.dto.CollaboratorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "collaboratorDetails")
 public class CollaboratorDetails implements Serializable {
