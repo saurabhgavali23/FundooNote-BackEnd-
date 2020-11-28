@@ -25,11 +25,23 @@ public class FundooCollaboratorController {
     @ApiOperation("Api for add collaborator")
     public ResponseEntity<ResponseDTO> addCollaborator(@Valid @RequestBody CollaboratorDTO collaboratorDTO,
                                                        @PathVariable(name = "noteId") Long noteId,
-                                                       @RequestHeader("token") String userToken){
+                                                       @RequestHeader("token") String userToken) {
 
         CollaboratorDetails collaboratorDetails = collaboratorService.addCollaborator(userToken, noteId, collaboratorDTO);
 
         ResponseDTO responseDTO = new ResponseDTO(collaboratorDetails);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/updateCollaborator")
+    @ApiOperation("Api for update collaborator")
+    public ResponseEntity<ResponseDTO> updateCollaborator(@Valid @RequestBody CollaboratorDTO collaboratorDTO,
+                                                          @RequestHeader("token") String userToken) {
+
+        String message = collaboratorService.updateCollaborator(collaboratorDTO, userToken);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

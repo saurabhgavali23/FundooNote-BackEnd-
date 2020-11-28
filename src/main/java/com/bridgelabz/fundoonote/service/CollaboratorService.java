@@ -62,4 +62,26 @@ public class CollaboratorService implements ICollaboratorService {
 
         return saveCollaboratorDetails;
     }
+
+    @Override
+    public String updateCollaborator(CollaboratorDTO collaboratorDTO, String userToken) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value()));
+
+        if (!jwtToken.validateToken(userToken, userDetails.id.toString()))
+            throw new FundooUserException("invalid_token", HttpStatus.BAD_REQUEST.value());
+
+        CollaboratorDetails collaboratorDetails = new CollaboratorDetails(collaboratorDTO);
+
+        int i = collaboratorRepository.updateCollaborator(collaboratorDetails.emailId,
+                collaboratorDetails.modifiedDate, collaboratorDTO.collabId);
+
+        if (i == 0)
+            throw new FundooNoteException("Collaborator_Not_Save", HttpStatus.NOT_IMPLEMENTED.value());
+
+        return "Collaborator_Updated";
+    }
 }
