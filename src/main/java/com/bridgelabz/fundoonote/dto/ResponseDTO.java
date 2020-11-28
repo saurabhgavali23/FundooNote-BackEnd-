@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonote.dto;
 
+import com.bridgelabz.fundoonote.module.CollaboratorDetails;
 import com.bridgelabz.fundoonote.module.LabelDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 
@@ -13,6 +14,7 @@ public class ResponseDTO {
 	public UserDetails userDetails;
 	public List data;
 	public LabelDetails labelDetails;
+	public CollaboratorDetails collaboratorDetails;
 
 	public ResponseDTO(String message, UserDetails userDetails) {
 		this.message = message;
@@ -39,5 +41,9 @@ public class ResponseDTO {
 
 	public ResponseDTO(LabelDetails labelDetails) {
 		this.labelDetails = labelDetails;
+	}
+
+	public ResponseDTO(CollaboratorDetails collaboratorDetails) {
+		this.collaboratorDetails = collaboratorDetails;
 	}
 }
