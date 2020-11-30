@@ -65,4 +65,16 @@ public class FundooLabelController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/label")
+    @ApiOperation("Api for delete label")
+    public ResponseEntity<ResponseDTO> deleteLabel(@RequestHeader("token") String userToken,
+                                                   @RequestBody LabelDTO labelDTO){
+
+        String message = labelService.deleteLabel(userToken, labelDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

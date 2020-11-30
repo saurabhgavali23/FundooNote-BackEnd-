@@ -19,20 +19,20 @@ public class RabbitMqConfig {
     String exchange;
 
     @Value("${rabbitmqRoutingKey}")
-    private String routingKey;
+    String routingKey;
 
     @Bean
     Queue queue() {
-        return new Queue(queueName, false);
+        return new Queue(queueName, true, false, false);
     }
 
     @Bean
-    DirectExchange exchange() {
-        return new DirectExchange(exchange);
+    TopicExchange exchange() {
+        return new TopicExchange(exchange);
     }
 
     @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
+    Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 

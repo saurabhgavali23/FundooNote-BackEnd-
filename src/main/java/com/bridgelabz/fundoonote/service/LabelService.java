@@ -116,4 +116,27 @@ public class LabelService implements ILabelService {
 
         return labelList;
     }
+
+    @Override
+    public String deleteLabel(String userToken, LabelDTO labelDTO) {
+
+        if(labelDTO.labelId == null)
+            throw new FundooNoteException("Id_Must_Not_Be_Null", HttpStatus.BAD_REQUEST.value());
+
+        String userIdFromToken = jwtToken.getUserIdFromToken(userToken);
+        long userId = Long.parseLong(userIdFromToken);
+
+        if(!jwtToken.validateToken(userToken, userIdFromToken))
+            throw new FundooUserException("Invalid_User_Token", HttpStatus.BAD_REQUEST.value());
+
+        userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        LabelDetails labelDetails = labelRepository.findById(labelDTO.labelId)
+                .orElseThrow(() -> new FundooNoteException("Label_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        labelRepository.deleteById(labelDetails.id);
+
+        return "Label_Deleted_Successfully";
+    }
 }

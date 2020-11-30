@@ -14,4 +14,6 @@ public interface ILabelService {
     String updateLabel(String userToken, LabelDTO labelDTO);
 
     List getLabelDetails(String userToken);
+
+    String deleteLabel(String userToken, LabelDTO labelDTO);
 }
