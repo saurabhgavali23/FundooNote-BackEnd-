@@ -56,6 +56,9 @@ public class LabelService implements ILabelService {
     @Override
     public String addLabelInNote(String userToken, Long labelId, Long noteId) {
 
+        if(labelId == null || noteId == null)
+            throw new FundooNoteException("Field_Must_Not_Be_Null", HttpStatus.BAD_REQUEST.value());
+
         long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
         userRepository.findById(userId)
@@ -76,6 +79,9 @@ public class LabelService implements ILabelService {
 
     @Override
     public String updateLabel(String userToken, LabelDTO labelDTO) {
+
+        if(labelDTO.labelId == null)
+            throw new FundooNoteException("Id_Must_Not_Be_Null", HttpStatus.BAD_REQUEST.value());
 
         long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
 
