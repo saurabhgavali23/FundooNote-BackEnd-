@@ -48,7 +48,7 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/pinUnpinNote")
+    @PutMapping("/pinUnpinNote")
     @ApiOperation("Api for pin or unpin note")
     public ResponseEntity<ResponseDTO> updatePin(@RequestBody NoteDTO noteDTO){
 
@@ -59,7 +59,7 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    @PostMapping("/archiveNote")
+    @PutMapping("/archiveNote")
     @ApiOperation("Api for archive or un-archive note")
     public ResponseEntity<ResponseDTO> updateArchive(@RequestBody NoteDTO noteDTO){
 
@@ -81,7 +81,7 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    @PostMapping("/colorNote")
+    @PutMapping("/colorNote")
     @ApiOperation("Api for update color of note")
     public ResponseEntity<ResponseDTO> updateColor(@RequestBody NoteDTO noteDTO){
 
@@ -92,7 +92,7 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    @PostMapping("/titleAndDescriptionNote")
+    @PutMapping("/titleAndDescriptionNote")
     @ApiOperation("Api for update title and description of note")
     public ResponseEntity<ResponseDTO> updateTitleAndDescription(@RequestBody NoteDTO noteDTO){
 
@@ -103,7 +103,7 @@ public class FundooNoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    @PostMapping("/reminderNote")
+    @PutMapping("/reminderNote")
     @ApiOperation("Api for update reminder of note")
     public ResponseEntity<ResponseDTO> updateReminder(@RequestBody NoteDTO noteDTO){
 
