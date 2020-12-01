@@ -168,4 +168,16 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @PostMapping("/searchNote/{word}")
+    @ApiOperation("Api for search note")
+    public ResponseEntity<ResponseDTO> searchNote(@RequestHeader("token") String userToken,
+                                                  @PathVariable(name = "word") String word){
+
+        List searchNoteList = noteService.searchNote(userToken, word);
+
+        ResponseDTO responseDTO = new ResponseDTO(searchNoteList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

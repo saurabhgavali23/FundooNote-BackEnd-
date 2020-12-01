@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonote.service;
 
 import com.bridgelabz.fundoonote.dto.NoteDTO;
 import com.bridgelabz.fundoonote.exception.FundooNoteException;
+import com.bridgelabz.fundoonote.exception.FundooUserException;
 import com.bridgelabz.fundoonote.module.NoteDetails;
 import com.bridgelabz.fundoonote.module.UserDetails;
 import com.bridgelabz.fundoonote.repository.NoteRepository;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService implements INoteService {
@@ -298,5 +301,27 @@ public class NoteService implements INoteService {
             return "Note_Updated";
 
         return "Note_Deleted_Successfully";
+    }
+
+    @Override
+    public List searchNote(String userToken, String word) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        if(!jwtToken.validateToken(userToken, userDetails.id.toString()))
+            throw new FundooUserException("Invalid_Token", HttpStatus.BAD_REQUEST.value());
+
+        if(word == null)
+            return new ArrayList();
+
+        List<NoteDetails> noteDetailsList = noteRepository.findAll()
+                .parallelStream()
+                .filter(n -> n.title.contains(word.replaceAll("\\s", "")) || n.description.contains(word.replaceAll("\\s", "")))
+                .collect(Collectors.toList());
+
+        return noteDetailsList;
     }
 }

@@ -31,4 +31,6 @@ public interface INoteService {
     String updateReminder(NoteDTO noteDTO);
 
     List getReminderNotes(String userToken);
+
+    List searchNote(String userToken, String word);
 }
