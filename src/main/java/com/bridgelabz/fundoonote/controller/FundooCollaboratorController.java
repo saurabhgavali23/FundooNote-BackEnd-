@@ -35,7 +35,7 @@ public class FundooCollaboratorController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/updateCollaborator")
+    @PutMapping("/updateCollaborator")
     @ApiOperation("Api for update collaborator")
     public ResponseEntity<ResponseDTO> updateCollaborator(@Valid @RequestBody CollaboratorDTO collaboratorDTO,
                                                           @RequestHeader("token") String userToken) {
