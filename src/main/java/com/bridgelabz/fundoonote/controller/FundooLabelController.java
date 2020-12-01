@@ -43,7 +43,7 @@ public class FundooLabelController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/updateLabel")
+    @PutMapping("/updateLabel")
     @ApiOperation("Api for update label")
     public ResponseEntity<ResponseDTO> updateLabel(@RequestHeader("token") String userToken,
                                                    @RequestBody LabelDTO labelDTO){
