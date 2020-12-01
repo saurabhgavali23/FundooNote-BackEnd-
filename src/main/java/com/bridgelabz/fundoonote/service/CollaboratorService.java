@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CollaboratorService implements ICollaboratorService {
@@ -104,5 +105,24 @@ public class CollaboratorService implements ICollaboratorService {
             throw new FundooUserException("Collaborators_Notes_Not_Found", HttpStatus.NOT_FOUND.value());
 
         return collaboratorDetailsList;
+    }
+
+    @Override
+    public String deleteCollaborator(String userToken, CollaboratorDTO collaboratorDTO) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("Invalid_User", HttpStatus.NOT_FOUND.value()));
+
+        if(!jwtToken.validateToken(userToken, userDetails.id.toString()))
+            throw new FundooUserException("Invalid_Token", HttpStatus.BAD_REQUEST.value());
+
+        CollaboratorDetails collaboratorDetails = collaboratorRepository.findById(collaboratorDTO.collabId)
+                .orElseThrow(() -> new FundooNoteException("Collaborator_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        collaboratorRepository.deleteById(collaboratorDetails.id);
+
+        return "Collaborator_Delete_Successfully";
     }
 }

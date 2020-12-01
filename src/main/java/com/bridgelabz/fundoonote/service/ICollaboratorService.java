@@ -12,4 +12,6 @@ public interface ICollaboratorService {
     String updateCollaborator(CollaboratorDTO collaboratorDTO, String userToken);
 
     List<CollaboratorDetails> getCollaboratorList(String userToken);
+
+    String deleteCollaborator(String userToken, CollaboratorDTO collaboratorDTO);
 }

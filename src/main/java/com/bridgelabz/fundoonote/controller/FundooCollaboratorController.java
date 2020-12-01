@@ -57,4 +57,15 @@ public class FundooCollaboratorController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/collaborator")
+    @ApiOperation("Api for delete collaborator")
+    public ResponseEntity<ResponseDTO> deleteCollaborator(@RequestHeader("token") String userToken, @RequestBody CollaboratorDTO collaboratorDTO){
+
+        String message = collaboratorService.deleteCollaborator(userToken, collaboratorDTO);
+
+        ResponseDTO responseDTO = new ResponseDTO(message);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
