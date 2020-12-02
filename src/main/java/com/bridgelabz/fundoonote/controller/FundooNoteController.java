@@ -170,7 +170,7 @@ public class FundooNoteController {
     }
 
     @GetMapping("/searchNote/{word}")
-    @ApiOperation("Api for search note")
+    @ApiOperation("Api for search note base on title and description")
     public ResponseEntity<ResponseDTO> searchNote(@RequestHeader("token") String userToken,
                                                   @PathVariable(name = "word") String word){
 
