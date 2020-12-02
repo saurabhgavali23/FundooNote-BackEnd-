@@ -79,6 +79,7 @@ public class UserDetails implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<CollaboratorDetails> collaboratorDetails;
 
+	@JsonIgnore
 	public List<CollaboratorDetails> getCollaboratorDetails() {
 		return collaboratorDetails;
 	}
