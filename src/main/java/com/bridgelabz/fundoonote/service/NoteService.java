@@ -317,7 +317,7 @@ public class NoteService implements INoteService {
         if(word == null)
             return new ArrayList();
 
-        List<NoteDetails> noteDetailsList = noteRepository.findAll()
+        List<NoteDetails> noteDetailsList = noteRepository.searchNoteList(userDetails.id)
                 .parallelStream()
                 .filter(n -> n.title.contains(word.replaceAll("\\s", "")) || n.description.contains(word.replaceAll("\\s", "")))
                 .collect(Collectors.toList());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -58,4 +59,7 @@ public interface NoteRepository extends JpaRepository<NoteDetails, Long> {
 
     @Query(value = "SELECT * FROM note_details u WHERE u.user_id =?1 AND u.reminder IS NOT NULL", nativeQuery = true)
     List<NoteDetails> getReminderNoteList(Long userId);
+
+    @Query(value = "SELECT * FROM note_details u WHERE u.user_id =?1", nativeQuery = true)
+    List<NoteDetails> searchNoteList(Long id);
 }
