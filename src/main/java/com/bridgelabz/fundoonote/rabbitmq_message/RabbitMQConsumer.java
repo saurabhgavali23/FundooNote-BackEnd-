@@ -20,7 +20,7 @@ public class RabbitMQConsumer {
 
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    @RabbitListener(queues = "${rabbitmqQueue}")
+    @RabbitListener(queues = "${rabbitMQ.Queue}")
     public void recievedMessage(Email email) {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();

@@ -1,0 +1,31 @@
+spring:
+  profiles: development
+  datasource:
+    url: ${funmysqlurl}
+    username: ${mysqluser}
+    password: ${mysqlpassword}
+
+#spring mail
+spring.mail:
+    username: ${mailid}
+    password: ${mailpass}
+
+#jwt token
+jwtSecret: SecretKey
+
+#url
+localHostUrl: http://localhost:8080
+frontEndUrl: http://localhost:3000
+
+#Rabbitmq Configuration
+spring.rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: guest
+  password: guest
+
+#Queue and exchange configuration properties for rabbitmq
+rabbitMQ:
+  Queue: queue
+  Exchange: exchange
+  RoutingKey: routing

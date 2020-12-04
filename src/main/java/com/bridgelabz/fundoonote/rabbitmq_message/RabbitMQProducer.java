@@ -12,10 +12,10 @@ public class RabbitMQProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmqExchange}")
+    @Value("${rabbitMQ.Exchange}")
     private String exchange;
 
-    @Value("${rabbitmqRoutingKey}")
+    @Value("${rabbitMQ.RoutingKey}")
     private String routingKey;
 
     public void sendMessage(Email email) {
