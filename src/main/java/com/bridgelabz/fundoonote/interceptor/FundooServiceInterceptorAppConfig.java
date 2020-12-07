@@ -13,7 +13,6 @@ public class FundooServiceInterceptorAppConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		System.out.println("ServiceAppConfig");
 		registry.addInterceptor(fundooServiceInterceptor)
 		.addPathPatterns("/note/*")
 				.addPathPatterns("/user/*")
