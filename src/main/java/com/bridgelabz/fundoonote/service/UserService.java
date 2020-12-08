@@ -4,6 +4,7 @@ import com.bridgelabz.fundoonote.exception.FundooUserException;
 import com.bridgelabz.fundoonote.module.Email;
 import com.bridgelabz.fundoonote.rabbitmq_message.RabbitMQProducer;
 import com.bridgelabz.fundoonote.util.JwtToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import com.bridgelabz.fundoonote.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements IUserService {
 
@@ -38,9 +40,12 @@ public class UserService implements IUserService {
 	@Override
 	public String addUser(UserDTO userDTO) {
 
+		log.debug("inside add user service method");
+
 		Optional<UserDetails> byEmailId = userRepository.findByEmail(userDTO.email);
 
 		if (byEmailId.isPresent()) {
+			log.error("user already exist");
 			throw new FundooUserException("User_Already_Registered", HttpStatus.CONFLICT.value());
 		}
 		
@@ -48,10 +53,13 @@ public class UserService implements IUserService {
 		UserDetails details = userRepository.save(userDetails);
 		String token = jwtToken.generateToken(userDetails.id.toString());
 
+		log.info("user crated with this id "+ details.id);
+
 		String path = "To Confirm Your Account, please click here : "
 				+url+"/user/confirm-account?token=" + token;
 
 		rabbitMQProducer.sendMessage(new Email(details.email, "Complete Registration", path));
+		log.debug("verification mail sent");
 
 		return "User Added Successfully";
 	}
