@@ -180,4 +180,17 @@ public class FundooNoteController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/noteByPage")
+    @ApiOperation("Api for get note by pages")
+    public ResponseEntity<ResponseDTO> getNotePages(@RequestHeader("token") String userToken,
+                                                    @RequestParam("pageNo") Integer pageNo,
+                                                    @RequestParam("pageSize") Integer pageSize){
+
+        List notePages = noteService.getNotePages(userToken, pageNo, pageSize);
+
+        ResponseDTO responseDTO = new ResponseDTO(notePages);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

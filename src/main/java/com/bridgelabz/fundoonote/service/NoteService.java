@@ -9,6 +9,9 @@ import com.bridgelabz.fundoonote.repository.NoteRepository;
 import com.bridgelabz.fundoonote.repository.UserRepository;
 import com.bridgelabz.fundoonote.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -324,5 +327,29 @@ public class NoteService implements INoteService {
                 .collect(Collectors.toList());
 
         return noteDetailsList;
+    }
+
+    @Override
+    public List getNotePages(String userToken, Integer pageNo, Integer pageSize) {
+
+        long userId = Long.parseLong(jwtToken.getUserIdFromToken(userToken));
+
+        UserDetails userDetails = userRepository.findById(userId)
+                .orElseThrow(() -> new FundooUserException("User_Not_Found", HttpStatus.NOT_FOUND.value()));
+
+        if(!jwtToken.validateToken(userToken, userDetails.id.toString()))
+            throw new FundooUserException("Invalid_Token", HttpStatus.BAD_REQUEST.value());
+
+        if(pageNo == null && pageSize == null)
+            throw new FundooNoteException("Field_Must_Not_Be_Null", HttpStatus.BAD_REQUEST.value());
+
+        PageRequest paging = PageRequest.of(pageNo, pageSize, Sort.by("title").ascending());
+
+        Page<NoteDetails> noteList = noteRepository.findAll(paging);
+
+        if(noteList.hasContent())
+            return noteList.getContent();
+
+        return new ArrayList<NoteDetails>();
     }
 }

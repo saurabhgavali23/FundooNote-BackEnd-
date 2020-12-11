@@ -33,4 +33,6 @@ public interface INoteService {
     List getReminderNotes(String userToken);
 
     List searchNote(String userToken, String word);
+
+    List getNotePages(String userToken, Integer pageNo, Integer pageSize);
 }
